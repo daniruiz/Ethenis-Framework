@@ -1,0 +1,5 @@
+{
+    "/^\/$/" : "index.php",
+    "/^\/posts$/" : "posts.php",
+    "/^\/contacto$/" : "contacto.php"
+}
