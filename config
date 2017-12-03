@@ -1,5 +1,6 @@
 {
-    "/^\/$/" : "index.php",
-    "/^\/posts$/" : "posts.php",
-    "/^\/contacto$/" : "contacto.php"
+    "" : ["ethenis.html", "Ethenis"],
+    "dra" : ["dra.html", "DяA"],
+    "flat-remix-css" : ["flat-remix-css.html", "Flat Remix CSS Library"],
+    "/man\/\d*/" : ["man.php", false]
 }
