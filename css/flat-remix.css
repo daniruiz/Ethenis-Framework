@@ -221,7 +221,7 @@ label.checktext input:checked + span {
     border-radius: 100%;
     z-index: 10;
     font-size: 30px;
-    line-height: 63px;
+    line-height: 53px;
     text-align: center;
     color: white;
 }

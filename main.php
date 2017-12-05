@@ -51,7 +51,7 @@
             <pre><?php echo "Today is " . date("Y/m/d") . "<br>"; ?></pre>
             <pre>PHP Version: <?php echo phpversion() ?></pre>
             <h5>Ethenis config</h5>
-            <{ show-config }>
+            <pre><?php print_r(Ethenis::$config) ?></pre>
         </section>
     </body>
 </html>

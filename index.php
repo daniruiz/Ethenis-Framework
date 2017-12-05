@@ -13,13 +13,6 @@ final class Ethenis {
         self::load_content();
     }
     
-    public static function config_to_html() {
-        return
-                "<pre>".
-                    print_r(self::$config,true).
-                "</pre>";
-    }
-    
     public static function get_config_json(){
         return json_encode(self::$config);
     }
@@ -75,8 +68,6 @@ final class Ethenis {
                 , $nav_html, $main_content);
         $final_content = str_replace("<{ content }>",
                 $secondary_content, $final_content);
-        $final_content = str_replace("<{ show-config }>",
-                self::config_to_html(), $final_content);
         return $final_content;
     }
     
