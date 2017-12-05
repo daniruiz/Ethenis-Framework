@@ -5,6 +5,7 @@ Ethenis = {
     },
     
     loadContent(){
+        Ethenis.scrollToTop();
         var request = new XMLHttpRequest();
         var contentWrapper = document.getElementById('__eth-content');
         contentWrapper.style.opacity = 0;
@@ -52,7 +53,18 @@ Ethenis = {
                     Ethenis.loadContent();
                 });
             });
+    },
+    
+    scrollToTop() {
+        var scrollDuration = 300; // ms
+        var scrollStep = -window.scrollY / (scrollDuration / 15),
+        scrollInterval = setInterval(function(){
+            if (window.scrollY != 0 )
+                window.scrollBy( 0, scrollStep );
+            else clearInterval(scrollInterval);
+        },15);
     }
+
 }
 
 
