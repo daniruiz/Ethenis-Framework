@@ -3,12 +3,17 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport">
+        <meta name=viewport content="width=550, maximum-scale=1">
         <title>Ethenis Framework</title>
         <link rel="stylesheet" type="text/css" href="/css/flat-remix.css">
         <style>
+            a.__eth-link:hover { text-decoration: none; } 
+            a.__eth-selected-link {
+                border-bottom: 4px solid white;
+            }
             body {
                 padding-bottom: 100px;
+                min-width: 550px;
             }
             section, .paper {
 		        width: 500px;
@@ -51,7 +56,7 @@
             <pre><?php echo "Today is " . date("Y/m/d") . "<br>"; ?></pre>
             <pre>PHP Version: <?php echo phpversion() ?></pre>
             <h5>Ethenis config</h5>
-            <pre><?php print_r(Ethenis::$config) ?></pre>
+            <pre><?php print_r(Ethenis::get_config()) ?></pre>
         </section>
     </body>
 </html>

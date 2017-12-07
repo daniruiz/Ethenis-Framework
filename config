@@ -1,6 +1,10 @@
 {
-    "" : ["ethenis.html", "Ethenis"],
-    "dra" : ["dra.html", "DяA"],
-    "flat-remix-css" : ["flat-remix-css.html", "Flat Remix CSS Library"],
-    "/^man\/\d*$/" : ["man.php", false]
+    "animationDuration" : 300,
+    "scrollAnimationDuration" : 100,
+    "content" : {
+        "" : ["ethenis.html", "Ethenis"],
+        "dra" : ["dra.html", "DяA"],
+        "flat-remix-css" : ["flat-remix-css.html", "Flat Remix CSS Library"],
+        "/^man\/\d*$/" : ["man.php", false]
+    }
 }

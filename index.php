@@ -7,10 +7,16 @@ ini_set('display_errors', 1);
 
 final class Ethenis {
     private static $config;
+    private static $uri;
     
     public static function exec(){
+        self::$uri = substr($_SERVER['REQUEST_URI'], 1);
         self::load_config();
         self::load_content();
+    }
+    
+    public static function get_config(){
+        return self::$config;
     }
     
     public static function get_config_json(){
@@ -32,12 +38,11 @@ final class Ethenis {
     }
 
     private static function get_secondary_content(){
-        $uri = substr($_SERVER['REQUEST_URI'], 1);
         $dir = "";
-        foreach (self::$config as $pattern => $values){
-            if($uri == $pattern ||
+        foreach (self::$config["content"] as $pattern => $values){
+            if(self::$uri == $pattern ||
                     (self::is_pattern($pattern) &&
-                    preg_match($pattern, $uri))) {
+                    preg_match($pattern, self::$uri))) {
                 $dir = $values[0];
                 break;
             }
@@ -55,17 +60,20 @@ final class Ethenis {
                 "(?:<{ \/link-template }>)/",
                 $main_content, $matches);
 
-        $nav_html = self::generate_nav($matches[1], $matches[2]);
+        $nav_html =
+                '<div id="__eth-nav">'.
+                    self::generate_nav($matches[1], $matches[2]).
+                '<div id="__eth-nav">';
         $secondary_content =
                 '<div id="__eth-content">'.
                      $secondary_content.
-                 '</div>';
+                '</div>';
         
         $final_content = preg_replace(
                 "/<{ link-template }>".
                     ".*<{ dir-name }>.*".
-                "<{ \/link-template }>/"
-                , $nav_html, $main_content);
+                "<{ \/link-template }>/",
+                $nav_html, $main_content);
         $final_content = str_replace("<{ content }>",
                 $secondary_content, $final_content);
         return $final_content;
@@ -73,13 +81,15 @@ final class Ethenis {
     
     private static function generate_nav($pre_link_html, $post_link_html){
         $nav = "";
-        foreach(self::$config as $dir => $values){
+        foreach(self::$config["content"] as $dir => $values){
             if(end($values) != false &&
                 !self::is_pattern($dir) && isset($values[1])){
+                $link_class = '__eth-link'.
+                        ((self::$uri == $dir) ? ' __eth-selected-link' : '');
                 $nav .=
-                '<a class="__eth-link" href="/'. $dir .'">'.
-                    $pre_link_html . $values[1] . $post_link_html.
-                '</a>';
+                        '<a class="'.$link_class.'" href="/'. $dir .'">'.
+                            $pre_link_html . $values[1] . $post_link_html.
+                        '</a>';
             }
         }
         return $nav;
@@ -95,12 +105,10 @@ Ethenis::exec();
 <style>
     #__eth-content {
         opacity: 1;
-        transition: opacity .3s;
+        transition: opacity <?php echo Ethenis::get_config()["animationDuration"]; ?>ms;
     }
 </style>
 <script>
     __ETHENIS_CONFIG = <?php echo Ethenis::get_config_json(); ?>
 </script>
 <script src="/js/index.js"></script>
-
-
