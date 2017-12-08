@@ -3,10 +3,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <meta name=viewport content="width=550, maximum-scale=1">
         <title>Ethenis Framework</title>
+        <meta name="description" content="Ethenis is a PHP and JavaScript framework developed to facilitate the creation of dynamic web pages with minimal effort">
         <link rel="icon" href="/img/favicon.png">
         <link rel="stylesheet" type="text/css" href="/css/flat-remix.css">
+        <meta name="theme-color" content="#5f4da7">
+        <meta name="msapplication-navbutton-color" content="#5f4da7">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#5f4da7">
         <style>
             a.__eth-link:hover { text-decoration: none; } 
             a.__eth-selected-link {
@@ -44,6 +47,12 @@
                 font-size: 16px;
             }
         </style>
+        <script>
+            window.addEventListener('scroll', function() {
+		        scroll = window.scrollY;
+		        document.getElementsByTagName('header')[0].style.height = 250 - scroll*0.5 + "px";
+	        });
+        </script>
     </head>
     <body>
         <header class="with-shadow"></header>
@@ -60,9 +69,3 @@
         </section>
     </body>
 </html>
-<script>
-    window.addEventListener('scroll', function() {
-		scroll = window.scrollY;
-		document.getElementsByTagName('header')[0].style.height = 250 - scroll*0.5 + "px";
-	});
-</script>
