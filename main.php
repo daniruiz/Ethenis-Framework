@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name=viewport content="width=550, maximum-scale=1">
         <title>Ethenis Framework</title>
+        <link rel="icon" href="/img/favicon.png">
         <link rel="stylesheet" type="text/css" href="/css/flat-remix.css">
         <style>
             a.__eth-link:hover { text-decoration: none; } 
@@ -53,7 +54,6 @@
         <hr>
         <section class="selectable">
             <h1>PHP Test</h1>
-            <pre><?php echo "Today is " . date("Y/m/d") . "<br>"; ?></pre>
             <pre>PHP Version: <?php echo phpversion() ?></pre>
             <h5>Ethenis config</h5>
             <pre><?php print_r(Ethenis::get_config()) ?></pre>

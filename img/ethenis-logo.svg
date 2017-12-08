@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933334"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   sodipodi:docname="ethenis-logo.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="10.230951"
+     inkscape:cx="31.770975"
+     inkscape:cy="49.4918"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="2036"
+     inkscape:window-x="1920"
+     inkscape:window-y="68"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-280.06665)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.29503632px;line-height:1.25;font-family:Pacifico;-inkscape-font-specification:Pacifico;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.2823759"
+       x="126.85518"
+       y="110.26841"
+       id="text18"
+       transform="scale(0.99945588,1.0005444)"><tspan
+         sodipodi:role="line"
+         id="tspan16"
+         x="126.85518"
+         y="120.06152"
+         style="stroke-width:0.2823759" /></text>
+    <path
+       style="fill:#333333;fill-opacity:1;stroke-width:0.05311126"
+       d="m -2.0833333e-6,280.06665 v 2.30907 5.00085 2.30909 5.00522 2.3091 H 2.3065766 16.914915 v -2.3091 -5.00522 h 0.01842 v -2.30909 H 9.6063444 v -4.23114 h -2.306579 v 4.23114 H 5.1889006 v 2.30909 h 2.1108608 v 5.00522 H 2.3065766 v -5.00522 h 2.1134639 v -2.30909 H 2.3065766 v -5.00085 H 12.686184 v -2.30907 H 2.3065766 Z M 9.6063404,289.68566 h 5.0019946 v 5.00522 H 9.6063404 Z"
+       id="rect20"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
