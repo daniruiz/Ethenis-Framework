@@ -8,7 +8,6 @@
 
 #### Ethenis is a PHP and JavaScript framework developed to facilitate the creation of dynamic web pages with minimal effort.
 <br>
-<br>
 
 # Try it:
 **https://ethenis.drasite.com**
