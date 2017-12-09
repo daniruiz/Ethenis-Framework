@@ -9,4 +9,4 @@
 #### Ethenis is a PHP and JavaScript framework developed to facilitate the creation of dynamic web pages with minimal effort.
 <br>
 
-# [Try it on ethenis.drasite.com](https://ethenis.drasite.com)
+# [Try it!](https://ethenis.drasite.com)
