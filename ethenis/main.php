@@ -10,6 +10,21 @@
         <meta name="theme-color" content="#5f4da7">
         <meta name="msapplication-navbutton-color" content="#5f4da7">
         <meta name="apple-mobile-web-app-status-bar-style" content="#5f4da7">
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43282075-1"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'UA-43282075-1');
+		</script>
+		<script>
+			window.addEventListener('scroll', function() {
+				scroll = window.scrollY;
+				document.getElementsByTagName('header')[0].style.height = 250 - scroll*0.5 + "px";
+			});
+		</script>
         <style>
             nav a.__eth-link:hover { text-decoration: none; } 
             nav a.__eth-selected-link {
@@ -74,19 +89,3 @@
         </section>
     </body>
 </html>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43282075-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-43282075-1');
-</script>
-<script>
-    window.addEventListener('scroll', function() {
-        scroll = window.scrollY;
-        document.getElementsByTagName('header')[0].style.height = 250 - scroll*0.5 + "px";
-    });
-</script>

@@ -59,7 +59,7 @@ final class Ethenis {
         $nav_html =
                 '<div id="__eth-nav">'.
                     self::generate_nav($matches[1], $matches[2]).
-                '<div id="__eth-nav">';
+                '</div>';
         $secondary_content =
                 '<div id="__eth-content">'.
                      $secondary_content.
