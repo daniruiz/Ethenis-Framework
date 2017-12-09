@@ -41,23 +41,33 @@
 		
 		var contentWrapper = document.getElementById( '__eth-content' );
 		contentWrapper.style.opacity = 0;
+		var transitionEnded = false;
+		var animationEndTimeout = 
+				setTimeout( function(){
+					transitionEnded = true
+				}, config.animationDuration );
 
 		request.onload = function() {
 			if ( this.status >= 200 && this.status < 400 ) {
 				var response = this.response;
-				var fn = function()  {
-					contentWrapper.removeEventListener( 'transitionend', fn,
-							true );
+				var showContent = function()  {
+					clearTimeout(animationEndTimeout);
+					contentWrapper.removeEventListener(
+							'transitionend', showContent, true );
 					
 					contentWrapper.innerHTML = response;
+					contentWrapper.style.opacity = 1;
 					loadContentLinks();
 					loadContentScripts();
-
-					contentWrapper.style.opacity = 1;
 				}
-				contentWrapper.addEventListener( 'transitionend', fn, true );
+				if(transitionEnded)
+					showContent();
+				else
+					contentWrapper.addEventListener(
+							'transitionend', showContent, true );
+				
 			} else
-				console.log( 'Ethenis->loadContent()  Error:' + this.status );
+				console.log( 'Ethenis->loadContent()  Error: ' + this.status );
 		};
 		request.onerror = function()  {
 			console.log( 'Ethenis->loadContent()  FatalError' );
