@@ -20,11 +20,14 @@
 		} );
 	}
 	
-	function loadContent() {		
-		document.getElementById( '__eth-content' ).style.opacity = 0;
-		execOnPageChangeFunction();		
-		scrollToTop();
+	function loadContent() {
+		scrollToTop( function() {
+			document.getElementById( '__eth-content' ).style.opacity = 0;
+		} );
+		
+		execOnPageChangeFunction();	
 		changeNavSelectedLink();
+		
 		
 		var request = new XMLHttpRequest();		
 		request.open( 'GET', getRealUrl() , true );
@@ -42,15 +45,49 @@
 		}
 	}
 	
-	function scrollToTop() {
+	function scrollToTop( callback ) {
+		disableScroll();
+		
 		var scrollDuration = config.scrollAnimationDuration; // ms
 		var scrollStep = -window.scrollY / ( scrollDuration / 15 ),
 			scrollInterval =
 				setInterval( function() {
-					if ( window.scrollY != 0  )
-						window.scrollBy(  0, scrollStep  );
-					else clearInterval( scrollInterval );
+					if ( window.scrollY != 0 )
+						window.scrollBy(  0, scrollStep );
+					else {
+						clearInterval( scrollInterval );
+						callback();
+						enableScroll();
+					}
 				},15 );
+	}
+	
+	
+	function disableScroll() {
+		function preventDefault(e) {
+			e = e || window.event;
+			if (e.preventDefault)
+				e.preventDefault();
+			e.returnValue = false;  
+		}
+
+		function preventDefaultForScrollKeys(e) {
+			var arrowKeys = {37: 1, 38: 1, 39: 1, 40: 1};
+			if (arrowKeys[e.keyCode]) {
+				preventDefault(e);
+				return false;
+			}
+		}
+
+		window.onwheel = preventDefault;
+		window.ontouchmove  = preventDefault;
+		document.onkeydown  = preventDefaultForScrollKeys;
+	}
+
+	function enableScroll() {
+		window.onwheel = null; 
+		window.ontouchmove = null;  
+		document.onkeydown = null;  
 	}
 	
 	function changeNavSelectedLink() {
@@ -123,9 +160,6 @@
 				.parentNode.removeChild( script )
 		} );
 	}
-	
-	
-	
 	
 	function forEachElement( elements, fn ) {
 		for( var i = 0; i < elements.length; i++ ) {
