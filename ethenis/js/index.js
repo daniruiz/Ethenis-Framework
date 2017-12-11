@@ -1,16 +1,16 @@
 ( function( config ) {
 	'use strict';
 	
-	(function(){
+	( function() {
 		var linkElements = document.getElementsByClassName( '__eth-link' );
 		loadLinks( linkElements );
 		
 		window.onpopstate = loadContent;
-	})();
+	} )();
 	
 	
 	function loadLinks( elements ) {
-		if( elements != null ) forEachElement( elements, function( element ) {
+		if ( elements != null ) forEachElement( elements, function( element ) {
 			element.onclick = function( event ) {
 				event.preventDefault();
 				
@@ -20,6 +20,39 @@
 		} );
 	}
 	
+	function loadContent() {		
+		document.getElementById( '__eth-content' ).style.opacity = 0;
+		execOnPageChangeFunction();		
+		scrollToTop();
+		changeNavSelectedLink();
+		
+		var request = new XMLHttpRequest();		
+		request.open( 'GET', getRealUrl() , true );
+		request.onload = function() { requestOnload( request ) };
+		request.onerror = function() {
+			console.log( 'Ethenis->loadContent()  FatalError' );
+		};
+		request.send();
+	}
+	
+	function execOnPageChangeFunction() {
+		if ( typeof Ethenis.onPageChange === 'function' ) {
+			Ethenis.onPageChange();
+			Ethenis.onPageChange = function() {};
+		}
+	}
+	
+	function scrollToTop() {
+		var scrollDuration = config.scrollAnimationDuration; // ms
+		var scrollStep = -window.scrollY / ( scrollDuration / 15 ),
+			scrollInterval =
+				setInterval( function() {
+					if ( window.scrollY != 0  )
+						window.scrollBy(  0, scrollStep  );
+					else clearInterval( scrollInterval );
+				},15 );
+	}
+	
 	function changeNavSelectedLink() {
 		var linkElements = document.getElementsByClassName( '__eth-link' );
 		var actualDir = window.location.pathname.substring( 1 );
@@ -27,53 +60,51 @@
 			element.classList.remove( '__eth-selected-link' );
 			
 			var elementDir = element.getAttribute( 'href' ).substring( 1 );
-			if( elementDir ==  actualDir )
+			if ( elementDir ==  actualDir )
 				element.classList.add( '__eth-selected-link' );
 		} );
 	}
 	
-	function loadContent() {
-		scrollToTop();
-		changeNavSelectedLink();
-		
-		var request = new XMLHttpRequest();
-		request.open( 'GET', getRealUrl() , true );
-		
+	function getRealUrl() {
+		var path = window.location.pathname.substring( 1 );
+		var realUrl = '';
+
+		for( var dir in config.content ) {
+			var dirRegex = new RegExp( dir.substring( 1, dir.length-1 ) );
+			if ( path == dir ||
+					( /\/.*\//.test( dir ) && dirRegex.test( path ) ) )
+				realUrl = '/content/' + config.content[dir][0];
+		}
+
+		return realUrl;
+	}
+	
+	function requestOnload( request ) {	
 		var contentWrapper = document.getElementById( '__eth-content' );
-		contentWrapper.style.opacity = 0;
-		var transitionEnded = false;
-		var animationEndTimeout = 
-				setTimeout( function(){
-					transitionEnded = true
-				}, config.animationDuration );
-
-		request.onload = function() {
-			if ( this.status >= 200 && this.status < 400 ) {
-				var response = this.response;
-				var showContent = function()  {
-					clearTimeout(animationEndTimeout);
-					contentWrapper.removeEventListener(
-							'transitionend', showContent, true );
-					
-					contentWrapper.innerHTML = response;
-					contentWrapper.style.opacity = 1;
-					loadContentLinks();
-					loadContentScripts();
-				}
-				if(transitionEnded)
-					showContent();
-				else
-					contentWrapper.addEventListener(
-							'transitionend', showContent, true );
+		
+		if ( request.status >= 200 && request.status < 400 ) {
+			var contentWrapperStyle = window.getComputedStyle( contentWrapper );
+			if ( contentWrapperStyle.getPropertyValue( 'opacity' ) == 0 ) showContent();
+			else contentWrapper.addEventListener( 'transitionend', showContent )
+			
+			function showContent() {
+				contentWrapper
+						.removeEventListener( 'transitionend', showContent );
 				
-			} else
-				console.log( 'Ethenis->loadContent()  Error: ' + this.status );
-		};
-		request.onerror = function()  {
-			console.log( 'Ethenis->loadContent()  FatalError' );
-		};
+				contentWrapper.innerHTML = request.response;
+				contentWrapper.style.opacity = 1;
+				loadContentLinks();
+				loadContentScripts();
+			}
+		} else
+			console.log( 'Ethenis->loadContent()  Error: ' + this.status );
+	};
+	
+	function loadContentLinks() {
+		var linkElements =
+				document.querySelectorAll( '#__eth-content .__eth-link' );
 
-		request.send();
+		loadLinks( linkElements );
 	}
 	
 	function loadContentScripts() {
@@ -93,37 +124,8 @@
 		} );
 	}
 	
-	function loadContentLinks() {
-		var linkElements =
-				document.querySelectorAll( '#__eth-content .__eth-link' );
-
-		loadLinks( linkElements );
-	}
 	
-	function getRealUrl() {
-		var path = window.location.pathname.substring( 1 );
-		var realUrl = '';
-
-		for( var dir in config.content ) {
-			var dirRegex = new RegExp( dir.substring( 1, dir.length-1 ) );
-			if( path == dir ||
-					( /\/.*\//.test( dir ) && dirRegex.test( path ) ) )
-				realUrl = '/content/' + config.content[dir][0];
-		}
-
-		return realUrl;
-	}
 	
-	function scrollToTop() {
-		var scrollDuration = config.scrollAnimationDuration; // ms
-		var scrollStep = -window.scrollY / ( scrollDuration / 15 ),
-			scrollInterval =
-				setInterval( function() {
-					if ( window.scrollY != 0  )
-						window.scrollBy(  0, scrollStep  );
-					else clearInterval( scrollInterval );
-				},15 );
-	}
 	
 	function forEachElement( elements, fn ) {
 		for( var i = 0; i < elements.length; i++ ) {
@@ -132,3 +134,4 @@
 	}
 
 } )( __ETHENIS_CONFIG );
+
