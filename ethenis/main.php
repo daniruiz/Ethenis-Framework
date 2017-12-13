@@ -45,6 +45,7 @@
                 background: linear-gradient(203deg, rgba(124,69,152,1) 17%, rgb(34, 0, 221) 100%);
                 top: 0;
                 z-index: -1;
+                will-change: height;
             }
             nav {
                 position: relative;
