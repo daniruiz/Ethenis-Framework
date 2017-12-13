@@ -2,8 +2,12 @@ Options -Indexes
 
 DirectoryIndex index.php
 
+DirectorySlash Off
+
 RewriteEngine On
 RewriteBase /
+
 RewriteRule ^(.*)\/$ /$1 [L,R=301]
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php 
+RewriteRule ^ index.php
