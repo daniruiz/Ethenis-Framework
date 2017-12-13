@@ -56,6 +56,8 @@ final class Ethenis {
                 "(?:<{ \/link-template }>)/",
                 $main_content, $matches );
 
+        if ( !isset( $matches[1] ) ) $matches[1] = "";
+        if ( !isset( $matches[2] ) ) $matches[2] = "";
         $nav_html =
                 '<div id="__eth-nav">'.
                     self::generate_nav( $matches[1], $matches[2] ).
