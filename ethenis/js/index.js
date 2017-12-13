@@ -5,9 +5,8 @@
 		var linkElements = document.getElementsByClassName( '__eth-link' );
 		loadLinks( linkElements );
 		
-		window.onpopstate = loadContent;
+		window.addEventListener( 'popstate', loadContent );
 	} )();
-	
 	
 	function loadLinks( elements ) {
 		if ( elements != null ) forEachElement( elements, function( element ) {
@@ -45,15 +44,20 @@
 		}
 	}
 	
-	function scrollToTop( callback ) {
-		disableScroll();
-		
+	function scrollToTop( callback ) {		
 		var scrollDuration = config.scrollAnimationDuration; // ms
-		var scrollStep = -window.scrollY / ( scrollDuration / 15 ),
-			scrollInterval =
+		var scrollStep = window.scrollY / ( scrollDuration / 15 );
+        if( scrollStep == 0 ) {
+            window.scrollTo( 0, 0 );
+            callback();
+            return;
+        }
+        
+        disableScroll();
+		var	scrollInterval =
 				setInterval( function() {
 					if ( window.scrollY != 0 )
-						window.scrollBy(  0, scrollStep );
+						window.scrollBy(  0, -scrollStep );
 					else {
 						clearInterval( scrollInterval );
 						callback();
@@ -62,33 +66,32 @@
 				},15 );
 	}
 	
-	
-	function disableScroll() {
-		function preventDefault(e) {
-			e = e || window.event;
-			if (e.preventDefault)
-				e.preventDefault();
-			e.returnValue = false;  
-		}
-
-		function preventDefaultForScrollKeys(e) {
-			var arrowKeys = {37: 1, 38: 1, 39: 1, 40: 1};
-			if (arrowKeys[e.keyCode]) {
-				preventDefault(e);
-				return false;
-			}
-		}
-
-		window.onwheel = preventDefault;
-		window.ontouchmove  = preventDefault;
-		document.onkeydown  = preventDefaultForScrollKeys;
+    function disableScroll() {
+        window.addEventListener( 'wheel', _preventDefault );
+        window.addEventListener( 'ontouchmove', _preventDefault );
+        window.addEventListener( 'keydown', _preventDefaultForScrollKeys );
 	}
 
 	function enableScroll() {
-		window.onwheel = null; 
-		window.ontouchmove = null;  
-		document.onkeydown = null;  
+		window.removeEventListener( 'wheel', _preventDefault );
+        window.removeEventListener( 'ontouchmove', _preventDefault );
+        window.removeEventListener( 'keydown', _preventDefaultForScrollKeys );
 	}
+    
+    function _preventDefault( e ) {
+        e = e || window.event;
+        if (e.preventDefault)
+            e.preventDefault();
+        e.returnValue = false;  
+    }
+
+    function _preventDefaultForScrollKeys( e ) {
+        var arrowKeys = { 37: 1, 38: 1, 39: 1, 40: 1 };
+        if (arrowKeys[e.keyCode]) {
+            _preventDefault( e );
+            return false;
+        }
+    }
 	
 	function changeNavSelectedLink() {
 		var linkElements = document.getElementsByClassName( '__eth-link' );
@@ -101,7 +104,7 @@
 				element.classList.add( '__eth-selected-link' );
 		} );
 	}
-	
+    
 	function getRealUrl() {
 		var path = window.location.pathname.substring( 1 );
 		var realUrl = '';
@@ -121,7 +124,8 @@
 		
 		if ( request.status >= 200 && request.status < 400 ) {
 			var contentWrapperStyle = window.getComputedStyle( contentWrapper );
-			if ( contentWrapperStyle.getPropertyValue( 'opacity' ) == 0 ) showContent();
+			if ( contentWrapperStyle.getPropertyValue( 'opacity' ) == 0 )
+                    showContent();
 			else contentWrapper.addEventListener( 'transitionend', showContent )
 			
 			function showContent() {
@@ -135,7 +139,7 @@
 			}
 		} else
 			console.log( 'Ethenis->loadContent()  Error: ' + this.status );
-	};
+	}
 	
 	function loadContentLinks() {
 		var linkElements =

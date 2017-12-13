@@ -51,9 +51,9 @@ final class Ethenis {
     private static function replace_special_variables( $main_content,
             $secondary_content ) {                
         preg_match( 
-                "/(?:<{ link-template }>)".
-                    "(.*)(?:<{ dir-name }>)(.*)".
-                "(?:<{ \/link-template }>)/",
+                "/( ?:<{ link-template }> )".
+                    "( .* )( ?:<{ dir-name }> )( .* )".
+                "( ?:<{ \/link-template }> )/",
                 $main_content, $matches );
 
         $nav_html =
