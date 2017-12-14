@@ -12,6 +12,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="#5f4da7">
         <!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43282075-1"></script>
+		
 		<script>
 		  window.dataLayer = window.dataLayer || [];
 		  function gtag(){dataLayer.push(arguments);}
@@ -19,17 +20,34 @@
 
 		  gtag('config', 'UA-43282075-1');
 		</script>
+		
 		<script>
-			window.addEventListener('scroll', function() {
+			function headerAnimation() {
 				scroll = window.scrollY;
 				document.getElementsByTagName('header')[0].style.height = 250 - scroll*0.5 + "px";
-			});
+			}
+			window.onload = function() {
+				headerAnimation();
+				window.addEventListener( 'scroll', headerAnimation );
+			}
 		</script>
         <style>
             nav a.__eth-link:hover { text-decoration: none; } 
             nav a.__eth-selected-link {
                 border-bottom: 4px solid white;
             }
+            a.blue-button-link {
+				color: white;
+				line-height: 50px;
+				border-radius: 2px;
+				background: blue;
+				width: 236px;
+				text-align: center;
+				margin: 30px auto;
+				text-shadow: 0 0 1px white;
+				color: white;
+				display: block;
+			}
             body {
                 padding-bottom: 100px;
                 min-width: 550px;
@@ -62,17 +80,6 @@
             pre {
                 font-size: 16px;
             }
-			#download-link {
-				line-height: 50px;
-				border-radius: 2px;
-				background: blue;
-				width: 236px;
-				text-align: center;
-				margin: 30px auto;
-				text-shadow: 0 0 1px white;
-				color: white;
-				display: block;
-			}
         </style>
     </head>
     <body>
