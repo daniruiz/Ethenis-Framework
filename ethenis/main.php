@@ -2,24 +2,29 @@
 
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title>Ethenis Framework</title>
-        <meta name="description" content="Ethenis is a PHP and JavaScript framework developed to facilitate the creation of dynamic web pages with minimal effort">
-        <link rel="icon" href="/img/favicon.png">
+           
+        <!-- Meta -->
+		<meta charset="UTF-8">
+        <meta name="description" content="Ethenis is a PHP and JavaScript framework developed with the aim of speeding up the creation of web applications with dynamically loaded content.">
+        
+        <!-- Title -->
+        <title>Ethenis Framework</title>		
+        <meta name="apple-mobile-web-app-title" content="Ethenis">
+        
+        <!-- Theme Colors -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="theme-color" content="#5f4da7">
+		<meta name="msapplication-navbutton-color" content="#5f4da7">
+		<meta name="apple-mobile-web-app-status-bar-style" content="#5f4da7">
+        
+        <!-- Icons -->
+        <link rel="shortcut icon" href="/img/favicon.png">
+        <link rel="icon" type="image/png" href="/img/favicon.png">
+        <link rel="apple-touch-icon-precomposed" href="/img/favicon.png">
+        
+        <!-- Flat-Remix.css -->
         <link rel="stylesheet" type="text/css" href="/css/flat-remix.css">
-        <meta name="theme-color" content="#5f4da7">
-        <meta name="msapplication-navbutton-color" content="#5f4da7">
-        <meta name="apple-mobile-web-app-status-bar-style" content="#5f4da7">
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43282075-1"></script>
-		
-		<script>
-		  window.dataLayer = window.dataLayer || [];
-		  function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date());
 
-		  gtag('config', 'UA-43282075-1');
-		</script>
 		
 		<script>
 			function headerAnimation() {
