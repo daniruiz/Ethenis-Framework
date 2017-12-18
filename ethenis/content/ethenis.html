@@ -1,41 +1,6 @@
-<section class="paper">
-    <img alt="logo" src="/img/ethenis-logo.svg" id="logo">
-    <h1>Ethenis Framework</h1>
-    <h6>Ethenis is licensed under the MIT License</h6>
-    <hr><br>
-    <p id="slogan">
-        So simple, that... <br>
-        <em>Even the Name Is Simple</em>
-    </p>
-    <hr>
-    <a href="https://github.com/daniruiz/Ethenis-Framework/releases/download/1.0/Ethenis_demo_v1.0.zip" class="with-shadow blue-button-link">↧ Download Ethenis v1.0</a>
-    <br>
-    <ul>
-    	<li>
-    		<p><a href="https://github.com/daniruiz/Ethenis-Framework/releases/download/1.0/Ethenis_v1.0.zip" style="
-">Download Ethenis Framework only v1.0</a></p>
-        </li>
-        <li>
-        	<p><a target="_blank" href="https://github.com/daniruiz/Ethenis-Framework">Source Code</a></p>
-    	</li>
-	</ul>
-    <h4>Manual</h4>
-    <ul>
-        <li>
-            <p><a class="__eth-link" href="/man/1">Configuration</a></p>
-        </li>
-        <li>
-            <p><a class="__eth-link" href="/man/2">Files Layout</a></p>
-        </li>
-        <li>
-            <p><a class="__eth-link" href="/man/2">Special Variables</a></p>
-        </li>
-        <li>
-            <p><a class="__eth-link" href="/man/2">Errors</a></p>
-        </li>
-    </ul>
-</section>
-<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+<script>
+	document.title = "Ethenis Framework";
+</script>
 <style>
     #logo {
         height: 110px;
@@ -56,7 +21,58 @@
         display: inline-block;
         margin: 15px 60px;
     }
+    #description {
+    	color: #999;
+		text-indent: 40px;
+		text-align: justify;
+    }
+    @media screen and (max-width: 530px) {
+        #logo {
+            margin: 40px auto;
+            display: block;
+            float: none;
+        }
+        h1 { text-align: center; }
+        #slogan { padding: 0; }
+        #slogan em { margin: 15px 20px; }
+    }
 </style>
-<script>
-	document.title = "Ethenis Framework";
-</script>
+<section class="paper">
+    <img alt="logo" src="/img/ethenis-logo.svg" id="logo">
+    <h1>Ethenis Framework</h1>
+    <h6>Ethenis is licensed under the MIT License</h6>
+    <hr><br>
+    <p id="slogan">
+        So simple, that... <br>
+        <em>Even the Name Is Simple</em>
+    </p>
+    <p id="description">Ethenis is a PHP and JavaScript framework developed with the aim of speeding up the creation of web applications with dynamically loaded content. Unlike other projects, Ethenis focus on a single goal, allowing its size and execution time to be minimal and thus preventing the slowdown of our page.</p>
+    <br>
+    <hr>
+    <a href="https://github.com/daniruiz/Ethenis-Framework/releases/download/1.0/Ethenis_demo_v1.0.zip" class="with-shadow blue-button-link">↧ Download Ethenis v1.0</a>
+    <br>
+    <ul>
+    	<li>
+    		<p><a href="https://github.com/daniruiz/Ethenis-Framework/releases/download/1.0/Ethenis_v1.0.zip">Download Ethenis Framework only v1.0</a></p>
+        </li>
+        <li>
+        	<p><a target="_blank" href="https://github.com/daniruiz/Ethenis-Framework">Source Code</a></p>
+    	</li>
+	</ul>
+    <h4>Manual</h4>
+    <ul>
+        <li>
+            <p><a class="__eth-link" href="/man/1">Installation</a></p>
+        </li>
+        <li>
+            <p><a class="__eth-link" href="/man/2">Configure Web Layout</a></p>
+        </li>
+        <li>
+            <p><a class="__eth-link" href="/man/3">Set the main content template</a></p>
+        </li>
+        <li>
+            <p><a class="__eth-link" href="/man/4">Insert the content Files</a></p>
+        </li>
+    </ul>    
+</section>
+<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">

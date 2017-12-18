@@ -28,8 +28,11 @@
 		changeNavSelectedLink();
 		
 		
-		var request = new XMLHttpRequest();		
-		request.open( 'GET', getRealUrl() , true );
+		var request = new XMLHttpRequest();
+		var uri = window.location.pathname
+				+ '?ajax=true&_=' + new Date().getTime();
+
+		request.open( 'GET', uri , true );
 		request.onload = function() { requestOnload( request ) };
 		request.onerror = function() {
 			console.log( 'Ethenis->loadContent()  FatalError' );
@@ -52,7 +55,7 @@
             callback();
             return;
         }
-        
+ 
         disableScroll();
 		var	scrollInterval =
 				setInterval( function() {
@@ -103,20 +106,6 @@
 			if ( elementDir ==  actualDir )
 				element.classList.add( '__eth-selected-link' );
 		} );
-	}
-    
-	function getRealUrl() {
-		var path = window.location.pathname.substring( 1 );
-		var realUrl = '';
-
-		for( var dir in config.content ) {
-			var dirRegex = new RegExp( dir.substring( 1, dir.length-1 ) );
-			if ( path == dir ||
-					( /\/.*\//.test( dir ) && dirRegex.test( path ) ) )
-				realUrl = '/content/' + config.content[dir][0];
-		}
-
-		return realUrl;
 	}
 	
 	function requestOnload( request ) {	
@@ -172,4 +161,3 @@
 	}
 
 } )( __ETHENIS_CONFIG );
-

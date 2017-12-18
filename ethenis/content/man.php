@@ -1,3 +1,118 @@
-<section id="content" class="paper">
-    <h1>Manual</h1>
+<?php $uri = Ethenis::get_uri(); ?>
+<style>
+	.blue-color { color: #3873d7; }
+	.green-color { color: #269687; }
+	.red-color { color: #9f2b32 }
+	.black-color { color: #000 }
+	pre, code {
+	    font-size: 12px;
+	    line-height: 25px;
+		text-shadow: 0.5px 0.5px 0, -0.5px -0.5px 0;
+	}
+	hr { margin: 30px auto; }
+	li {
+		border-left: 5px solid #EEE;
+		padding-left: 5px;
+		margin-bottom: 10px;
+	}
+</style>
+<section id="content" class="paper selectable">
+<h1>Manual</h1>
+<?php if ( $uri == 'man/1' ) { ?>
+    <h3>Installation</h3>
+		Download Ethenis Framework, extract the package and copy all the files into the webpage main folder. After that you should have the following folder layout in it.
+		<pre>
+    --> |
+        |--> <span class="blue-color">content</span>
+        |--> <span class="blue-color">js</span>
+        |     \--> <span class="green-color">ethenis.js</span>
+        |--> <span class="green-color">config</span>
+        |--> <span class="green-color">index.php</span>
+        \--> <span class="green-color">main.php</span>
+		</pre>
+		To ensure Everything works open the web in your browser. Everything should work as <a href="https://ethenis.drasite.com" target="_blank">ethenis.drasite.com</a>.
+	<hr>
+<?php } else if ( $uri == 'man/2' ) { ?>
+    <h3>Configure Web Layout</h3>
+   		The web layout will be set in the <strong>config</strong> file. With it it's possible to modify the animations duration, the uri's the website will manage, and the menu elements.
+	   	<h6>Example:</h6>
+	   		<pre>
+    {
+        <span class="blue-color">"animationDuration"</span> : 400,
+        <span class="blue-color">"scrollAnimationDuration"</span> : 400,
+        <span class="blue-color">"content"</span> : {
+            <span class="green-color">""</span> : [<span class="green-color">"home.html"</span, <span class="green-color">"Home"</span>],
+            <span class="green-color">"info"</span> : [<span class="green-color">"info.html"</span>, <span class="green-color">"Info"</span>, <span class="red-color">false</span>],
+            <span class="green-color">"/^man\/\d*$/"</span> : [<span class="green-color">"man.php"</span>]
+          }
+    }
+ 	  		</pre>
+		   	<ul>
+		   		<li><strong>animationDuration:</strong> the time in milliseconds for the fade animation between page change.</li>
+				<li><strong>scrollAnimationDuration:</strong> the time in milliseconds for the "scrollToTop" animation before page change.</li>			
+				<li><strong>content:</strong> the content that will be public and its corresponding uri.</li>
+					<h5>Content entry format:</h5>
+					<ul>
+						<li>
+							<code><span class="green-color">"&lt;uri&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>]</code>
+						</li>
+						<li>
+							<code><span class="green-color">"&lt;uri&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>, <span class="red-color">false</span>]</code>
+							<h6>→ The link won't be added to the navigation menu.</h6>
+						</li>
+						<li>
+							<code><span class="green-color">"&lt;uri-pattern&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>]</code>
+							<h6>→ The link won't be added to the navigation menu.</h6>
+						</li>
+					</ul>
+	   		</ul>
+   	<hr>
+<?php } else if ( $uri == 'man/3' ) { ?>
+    <h3>Set the main content template</h3>
+    	All the page design will be supported by an html file template, which will define the content that will remain static in the page. This content will be defined in the <strong>main.php</strong> file.
+		<h6>Example</h6>
+		<pre class="green-color">
+    &lt;html&gt;
+        &lt;head&gt;...&lt;/head&gt;
+        &lt;body&gt;
+            &lt;header class="with-shadow"&gt;&lt;/header&gt;
+            &lt;nav&gt;
+                <u class="red-color">&lt;{ link-template }&gt;</u>
+                    &lt;span style="margin: 5px"&gt;
+                        <u class="red-color">&lt;{ link-text }&gt;</u>
+                    &lt;/span&gt;
+                <u class="red-color">&lt;{ /link-template }&gt;</u>
+            &lt;/nav&gt;
+            <u class="red-color">&lt;{ content }&gt;</u>
+        &lt;/body&gt;
+    &lt;/html&gt;
+		</pre>
+		<ul>
+			<li>
+				<pre class="red-color">
+<{ link-template }>
+    <span class="black-color">[html]</span><{ link-text }><span class="black-color">[html]</span>
+<{ /link-template }></pre>
+				<h6>→ It indicates where to place the link elemenets and the template to follow.</h6>
+			</li>
+			<li>
+				<code class="red-color"><{ content }></code>
+				<h6>→ It indicates where to place the corresponding content.</h6>
+			</li>
+		</ul>
+    <hr>
+<?php } else if ( $uri == 'man/4' ) { ?>
+    <h3>Insert the content Files</h3>
+    	The html content to be inserted with each uri must be specified inside the <strong>content</strong> directory, inside its corresponding file, as it was previously specified in the <strong>config</strong> file.<br>
+    	The php and javascript code inside those files will also be executed.
+		<br><br>
+		To change the page title you have to add the  following script to the content file:
+		<pre>
+    <span class="red-color">&lt;script&gt;</span>
+        <span class="blue-color">document.title</span> = <span class="green-color">"&lt;content-title&gt;"</span>;
+    <span class="red-color">&lt;/script&gt;</span>
+		</pre>
+<?php } else { ?>
+	<h3>This page is empty.</h3>
+<?php } ?>
 </section>

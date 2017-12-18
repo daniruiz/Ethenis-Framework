@@ -5,8 +5,11 @@ final class Ethenis {
     private static $config;
     private static $uri;
     
+	
+	
+	
     public static function exec() {
-        self::$uri = substr( $_SERVER['REQUEST_URI'], 1 );
+        self::$uri = substr( parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 1 );
         self::load_config();
         self::load_content();
     }
@@ -18,7 +21,14 @@ final class Ethenis {
     public static function get_config_json() {
         return json_encode( self::$config );
     }
+	
+	public static function get_uri() {
+		return self::$uri;
+	}
 
+	
+	
+	
     private static function load_config() {
         $config_string = file_get_contents( "config" );
         $config_json = str_replace( "\\","\\\\", $config_string );
@@ -26,14 +36,22 @@ final class Ethenis {
     }
 
     private static function load_content() {
+        $secondary_content_dir = self::get_secondary_content_dir();
+		if ( isset( $_GET['ajax'] ) && $_GET['ajax'] ) {
+			include( $secondary_content_dir );
+			die();
+		}
+		
+		if( $secondary_content_dir == "content/404.html" )
+			http_response_code( 404 );		
+		$secondary_content = file_get_contents( $secondary_content_dir );
         $main_content = file_get_contents( "main.php" );
-        $secondary_content = self::get_secondary_content();
         $final_content = self::replace_special_variables( $main_content,
                 $secondary_content );
         eval( ' ?>'.$final_content.'<?php ' );
     }
 
-    private static function get_secondary_content() {
+    private static function get_secondary_content_dir() {
         $dir = "";
         foreach ( self::$config["content"] as $pattern => $values ) {
             if( self::$uri == $pattern ||
@@ -44,15 +62,15 @@ final class Ethenis {
             }
         }
         if( $dir == "" )
-            http_response_code( 404 );
-        return file_get_contents( "content/".$dir );
+            $dir = "404.html";
+        return "content/".$dir;
     }
     
     private static function replace_special_variables( $main_content,
             $secondary_content ) {                
         preg_match( 
                 "/(?:<{ link-template }>)".
-                    "(.*)(?:<{ dir-name }>)(.*)".
+                    "(.*)(?:<{ link-text }>)(.*)".
                 "(?:<{ \/link-template }>)/",
                 $main_content, $matches );
 
@@ -70,7 +88,7 @@ final class Ethenis {
         
         $final_content = preg_replace( 
                 "/<{ link-template }>".
-                    ".*<{ dir-name }>.*".
+                    ".*<{ link-text }>.*".
                 "<{ \/link-template }>/",
                 $nav_html, $main_content );
         $final_content = str_replace( "<{ content }>",
@@ -115,4 +133,6 @@ Ethenis::exec();
 <script>
     __ETHENIS_CONFIG = <?php echo Ethenis::get_config_json(); ?>
 </script>
-<script src="/js/index.js"></script>
+<script src="/js/ethenis.js"></script>
+
+

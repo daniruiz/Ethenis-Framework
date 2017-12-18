@@ -5,6 +5,7 @@
            
         <!-- Meta -->
 		<meta charset="UTF-8">
+		<meta  name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport">
         <meta name="description" content="Ethenis is a PHP and JavaScript framework developed with the aim of speeding up the creation of web applications with dynamically loaded content.">
         
         <!-- Title -->
@@ -53,12 +54,10 @@
 				color: white;
 				display: block;
 			}
-            body {
-                padding-bottom: 100px;
-                min-width: 550px;
-            }
+            body { padding-bottom: 100px; }
             section, .paper {
-		        width: 500px;
+		        max-width: 500px;
+                width: 95%;
 		        margin: 40px auto;
 	        }
             header {
@@ -82,23 +81,19 @@
                 font-size: 20px;
                 margin: 0 20px;
             }
-            pre {
-                font-size: 16px;
+            @media screen and (max-width: 450px) {
+                .nav-link-content {
+                    font-size: 14px;
+                    margin: 0 10px;
+                }
             }
         </style>
     </head>
     <body>
         <header class="with-shadow"></header>
         <nav>
-            <{ link-template }><span class="nav-link-content"><{ dir-name }></span><{ /link-template }>
+            <{ link-template }><span class="nav-link-content"><{ link-text }></span><{ /link-template }>
         </nav>
         <{ content }>
-        <hr>
-        <section class="selectable">
-            <h1>PHP Test</h1>
-            <pre>PHP Version: <?php echo phpversion() ?></pre>
-            <h5>Ethenis config</h5>
-            <pre><?php print_r(Ethenis::get_config()) ?></pre>
-        </section>
     </body>
 </html>
