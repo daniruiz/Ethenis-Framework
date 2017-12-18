@@ -5,7 +5,7 @@
            
         <!-- Meta -->
 		<meta charset="UTF-8">
-		<meta  name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
         <meta name="description" content="Ethenis is a PHP and JavaScript framework developed with the aim of speeding up the creation of web applications with dynamically loaded content.">
         
         <!-- Title -->
