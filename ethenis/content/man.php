@@ -36,9 +36,10 @@
         |     \--> <span class="green-color">ethenis.js</span>
         |--> <span class="green-color">config</span>
         |--> <span class="green-color">index.php</span>
-        \--> <span class="green-color">main.php</span>
+        |--> <span class="green-color">main.php</span>
+        \--> <span class="red-color">.htaccess</span>
 		</pre>
-		To ensure Everything works open the web in your browser. Everything should work as <a href="https://ethenis.drasite.com" target="_blank">ethenis.drasite.com</a>.
+		To ensure Everything works open the web in your browser. If you downloaded the full package everything should work as <a href="https://ethenis.drasite.com" target="_blank">ethenis.drasite.com</a>.
 	<hr>
 <?php } else if ( $path == 'man/2' ) { ?>
     <h3>Configure Web Layout</h3>
