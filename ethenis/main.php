@@ -83,8 +83,8 @@
             }
             @media screen and (max-width: 450px) {
                 .nav-link-content {
-                    font-size: 14px;
-                    margin: 0 10px;
+					font-size: 18px;
+    				margin: 0 5px;
                 }
             }
         </style>

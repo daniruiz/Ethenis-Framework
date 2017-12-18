@@ -15,6 +15,12 @@
 		padding-left: 5px;
 		margin-bottom: 10px;
 	}
+	@media screen and (max-width: 420px) {
+		code, pre {
+			word-spacing: -6px;
+		}
+		ul { padding-left: 10px; }
+    }
 </style>
 <section id="content" class="paper selectable">
 <h1>Manual</h1>
@@ -51,21 +57,21 @@
 		   		<li><strong>animationDuration:</strong> the time in milliseconds for the fade animation between page change.</li>
 				<li><strong>scrollAnimationDuration:</strong> the time in milliseconds for the "scrollToTop" animation before page change.</li>			
 				<li><strong>content:</strong> the content that will be public and its corresponding path.</li>
-					<h5>Content entry format:</h5>
-					<ul>
-						<li>
-							<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>]</code>
-						</li>
-						<li>
-							<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>, <span class="red-color">false</span>]</code>
-							<h6>→ The link won't be added to the navigation menu.</h6>
-						</li>
-						<li>
-							<code><span class="green-color">"&lt;path-pattern&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>]</code>
-							<h6>→ The link won't be added to the navigation menu.</h6>
-						</li>
-					</ul>
-	   		</ul>
+			</ul>
+			<h5>Content entry format:</h5>
+				<ul>
+					<li>
+						<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>]</code>
+					</li>
+					<li>
+						<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>, <span class="red-color">false</span>]</code>
+						<h6>→ The link won't be added to the navigation menu.</h6>
+					</li>
+					<li>
+						<code><span class="green-color">"&lt;path-pattern&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>]</code>
+						<h6>→ The link won't be added to the navigation menu.</h6>
+					</li>
+				</ul>
    	<hr>
 <?php } else if ( $path == 'man/3' ) { ?>
     <h3>Set the main content template</h3>
