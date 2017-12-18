@@ -29,10 +29,10 @@
 		
 		
 		var request = new XMLHttpRequest();
-		var uri = window.location.pathname
+		var path = window.location.pathname
 				+ '?ajax=true&_=' + new Date().getTime();
 
-		request.open( 'GET', uri , true );
+		request.open( 'GET', path , true );
 		request.onload = function() { requestOnload( request ) };
 		request.onerror = function() {
 			console.log( 'Ethenis->loadContent()  FatalError' );

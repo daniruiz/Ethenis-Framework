@@ -1,4 +1,4 @@
-<?php $uri = Ethenis::get_uri(); ?>
+<?php $path = Ethenis::get_path(); ?>
 <style>
 	.blue-color { color: #3873d7; }
 	.green-color { color: #269687; }
@@ -18,7 +18,7 @@
 </style>
 <section id="content" class="paper selectable">
 <h1>Manual</h1>
-<?php if ( $uri == 'man/1' ) { ?>
+<?php if ( $path == 'man/1' ) { ?>
     <h3>Installation</h3>
 		Download Ethenis Framework, extract the package and copy all the files into the webpage main folder. After that you should have the following folder layout in it.
 		<pre>
@@ -32,9 +32,9 @@
 		</pre>
 		To ensure Everything works open the web in your browser. Everything should work as <a href="https://ethenis.drasite.com" target="_blank">ethenis.drasite.com</a>.
 	<hr>
-<?php } else if ( $uri == 'man/2' ) { ?>
+<?php } else if ( $path == 'man/2' ) { ?>
     <h3>Configure Web Layout</h3>
-   		The web layout will be set in the <strong>config</strong> file. With it it's possible to modify the animations duration, the uri's the website will manage, and the menu elements.
+   		The web layout will be set in the <strong>config</strong> file. With it it's possible to modify the animations duration, the paths the website will manage, and the menu elements.
 	   	<h6>Example:</h6>
 	   		<pre>
     {
@@ -50,24 +50,24 @@
 		   	<ul>
 		   		<li><strong>animationDuration:</strong> the time in milliseconds for the fade animation between page change.</li>
 				<li><strong>scrollAnimationDuration:</strong> the time in milliseconds for the "scrollToTop" animation before page change.</li>			
-				<li><strong>content:</strong> the content that will be public and its corresponding uri.</li>
+				<li><strong>content:</strong> the content that will be public and its corresponding path.</li>
 					<h5>Content entry format:</h5>
 					<ul>
 						<li>
-							<code><span class="green-color">"&lt;uri&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>]</code>
+							<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>]</code>
 						</li>
 						<li>
-							<code><span class="green-color">"&lt;uri&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>, <span class="red-color">false</span>]</code>
+							<code><span class="green-color">"&lt;path&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>, <span class="green-color">"&lt;link-string&gt;"</span>, <span class="red-color">false</span>]</code>
 							<h6>→ The link won't be added to the navigation menu.</h6>
 						</li>
 						<li>
-							<code><span class="green-color">"&lt;uri-pattern&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>]</code>
+							<code><span class="green-color">"&lt;path-pattern&gt;"</span> : [<span class="green-color">"&lt;file-name&gt;[.html|.php]"</span>]</code>
 							<h6>→ The link won't be added to the navigation menu.</h6>
 						</li>
 					</ul>
 	   		</ul>
    	<hr>
-<?php } else if ( $uri == 'man/3' ) { ?>
+<?php } else if ( $path == 'man/3' ) { ?>
     <h3>Set the main content template</h3>
     	All the page design will be supported by an html file template, which will define the content that will remain static in the page. This content will be defined in the <strong>main.php</strong> file.
 		<h6>Example</h6>
@@ -93,7 +93,7 @@
 <{ link-template }>
     <span class="black-color">[html]</span><{ link-text }><span class="black-color">[html]</span>
 <{ /link-template }></pre>
-				<h6>→ It indicates where to place the link elemenets and the template to follow.</h6>
+				<h6>→ It indicates where to place the link elemeents and the template to follow.</h6>
 			</li>
 			<li>
 				<code class="red-color"><{ content }></code>
@@ -101,10 +101,10 @@
 			</li>
 		</ul>
     <hr>
-<?php } else if ( $uri == 'man/4' ) { ?>
+<?php } else if ( $path == 'man/4' ) { ?>
     <h3>Insert the content Files</h3>
-    	The html content to be inserted with each uri must be specified inside the <strong>content</strong> directory, inside its corresponding file, as it was previously specified in the <strong>config</strong> file.<br>
-    	The php and javascript code inside those files will also be executed.
+    	The html content to be inserted with each path must be specified inside the <strong>content</strong> directory, inside its corresponding file, as it was previously specified in the <strong>config</strong> file.<br>
+    	The PHP and JavaScript code inside those files will also be executed.
 		<br><br>
 		To change the page title you have to add the  following script to the content file:
 		<pre>
@@ -112,6 +112,22 @@
         <span class="blue-color">document.title</span> = <span class="green-color">"&lt;content-title&gt;"</span>;
     <span class="red-color">&lt;/script&gt;</span>
 		</pre>
+<?php } else if ( $path == 'man/5' ) { ?>
+	<h3>Ethenis PHP special functions</h3>
+	<ul>
+		<li>
+			<code>Ethenis::<span class="blue-color">get_config()</span></code><br>
+			→ Returns the configuration values as an array.
+		</li>
+		<li>
+			<code>Ethenis::<span class="blue-color">get_config_json()</span></code><br>
+			→ Returns the configuration values as json string.
+		</li>
+		<li>
+			<code>Ethenis::<span class="blue-color">get_path()</span></code><br>
+			→ Returns the actual path.
+		</li>
+	</ul>
 <?php } else { ?>
 	<h3>This page is empty.</h3>
 <?php } ?>

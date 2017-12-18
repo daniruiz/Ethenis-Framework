@@ -1,5 +1,5 @@
 {
-    "animationDuration" : 300,
+    "fadeAnimationDuration" : 300,
     "scrollAnimationDuration" : 100,
     "content" : {
         "" : ["ethenis.html", "Ethenis"],

@@ -3,13 +3,13 @@ header( "Content-Type: text/html;charset=utf-8" );
 
 final class Ethenis {
     private static $config;
-    private static $uri;
+    private static $path;
     
 	
 	
 	
     public static function exec() {
-        self::$uri = substr( parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 1 );
+        self::$path = substr( parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 1 );
         self::load_config();
         self::load_content();
     }
@@ -22,8 +22,8 @@ final class Ethenis {
         return json_encode( self::$config );
     }
 	
-	public static function get_uri() {
-		return self::$uri;
+	public static function get_path() {
+		return self::$path;
 	}
 
 	
@@ -54,9 +54,9 @@ final class Ethenis {
     private static function get_secondary_content_dir() {
         $dir = "";
         foreach ( self::$config["content"] as $pattern => $values ) {
-            if( self::$uri == $pattern ||
+            if( self::$path == $pattern ||
                     ( self::is_pattern( $pattern ) &&
-                    preg_match( $pattern, self::$uri ) ) ) {
+                    preg_match( $pattern, self::$path ) ) ) {
                 $dir = $values[0];
                 break;
             }
@@ -102,7 +102,7 @@ final class Ethenis {
             if( end( $values ) != false &&
                 !self::is_pattern( $dir ) && isset( $values[1] ) ) {
                 $link_class = '__eth-link'.
-                        ( ( self::$uri == $dir )
+                        ( ( self::$path == $dir )
                         		? ' __eth-selected-link' : '' );
                 $nav .=
                         '<a class="'.$link_class.'" href="/'. $dir .'">'.
@@ -123,7 +123,7 @@ Ethenis::exec();
 <style>
     #__eth-content {
         opacity: 1;
-        transition: opacity <?php echo Ethenis::get_config()["animationDuration"]; ?>ms;
+        transition: opacity <?php echo Ethenis::get_config()["fadeAnimationDuration"]; ?>ms;
         will-change: opacity, contents;
     }
     html, body {
