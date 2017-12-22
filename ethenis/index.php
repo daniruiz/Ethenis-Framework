@@ -124,10 +124,6 @@ Ethenis::exec();
     #__eth-content {
         opacity: 1;
         transition: opacity <?php echo Ethenis::get_config()["fadeAnimationDuration"]; ?>ms;
-        will-change: opacity, contents;
-    }
-    html, body {
-        will-change: scroll-position;
     }
 </style>
 <script>
