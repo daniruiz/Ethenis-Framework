@@ -81,6 +81,72 @@
                 font-size: 20px;
                 margin: 0 20px;
             }
+            #loading {
+                display: none;
+                height: 50px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            body.loading #loading {
+                display: block;
+            }
+            @-webkit-keyframes cargando {
+                0%, 40%, 100% {
+                    -webkit-transform: scaleY(0.05);
+                }
+                20% {
+                    -webkit-transform: scaleY(1);
+                }
+            }
+            @keyframes cargando {
+                0%, 40%, 100% {
+                    transform: scaleY(0.05);
+                    -webkit-transform: scaleY(0.05);
+                }
+                20% {
+                    transform: scaleY(1);
+                    -webkit-transform: scaleY(1);
+                }
+            }
+            #loading div {
+                box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+                height: 100%;
+                width: 8px;
+                display: inline-block;
+                margin-left: 2px;
+                -webkit-animation: cargando .8s infinite ease-in-out;
+                animation: cargando .8s infinite ease-in-out;
+            }
+            #loading div:nth-child(1) {
+                background: #0000ff;
+                -webkit-animation-delay: -.5s;
+                animation-delay: -.5s;
+            }
+            #loading div:nth-child(2) {
+                background: #3873d7;
+                -webkit-animation-delay: -.4s;
+                animation-delay: -.4s;
+            }
+            #loading div:nth-child(3) {
+                background: #269687;
+                -webkit-animation-delay: -.3s;
+                animation-delay: -.3s;
+            }
+            #loading div:nth-child(4) {
+                background: #ba174e;
+                -webkit-animation-delay: -.2s;
+                animation-delay: -.2s;
+            }
+            #loading div:nth-child(5) {
+                background: #9f2b32;
+                -webkit-animation-delay: -.1s;
+                animation-delay: -.1s;
+            }
+            #loading div:nth-child(6) {
+                background: #7c4598;
+            }
             @media screen and (max-width: 450px) {
                 .nav-link-content {
 					font-size: 18px;
@@ -95,5 +161,6 @@
             <{ link-template }><span class="nav-link-content"><{ link-text }></span><{ /link-template }>
         </nav>
         <{ content }>
+        <div id="loading"><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </body>
 </html>

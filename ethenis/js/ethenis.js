@@ -1,5 +1,10 @@
-(function (config) {
-  'use strict';
+/* Using standard https://standardjs.com/ */
+/* global __ETHENIS */
+
+(function (ethenis) {
+  'use strict'
+
+  var config = ethenis.config;
 
   (function () {
     var linkElements = document.getElementsByClassName('__eth-link')
@@ -14,7 +19,7 @@
         element.onclick = function (event) {
           event.preventDefault()
 
-          history.pushState('', '', element.getAttribute('href'))
+          window.history.pushState('', '', element.getAttribute('href'))
           loadContent()
         }
       })
@@ -28,8 +33,9 @@
 
     execOnPageChangeFunction()
     changeNavSelectedLink()
+    document.body.classList.add('loading')
 
-    var request = new XMLHttpRequest()
+    var request = new window.XMLHttpRequest()
     var path = window.location.pathname +
         '?ajax=true&_=' + new Date().getTime()
 
@@ -38,45 +44,49 @@
     request.onerror = function () {
       console.log('Ethenis->loadContent()  FatalError')
     }
+    request.onreadystatechange = function () {
+      if (request.readyState === 4) {
+        document.body.classList.remove('loading')
+      }
+    }
     request.send()
   }
 
   function execOnPageChangeFunction () {
-    if (typeof Ethenis.onPageChange === 'function') {
-      Ethenis.onPageChange()
-      Ethenis.onPageChange = function () {}
+    if (typeof ethenis.onPageChange === 'function') {
+      ethenis.onPageChange()
+      ethenis.onPageChange = function () {}
     }
   }
 
   function scrollToTop (callback) {
     var scrollDuration = config.scrollAnimationDuration // ms
     var scrollStep = window.scrollY / (scrollDuration / 15)
-    if (scrollStep == 0) {
+    if (scrollStep === 0) {
       window.scrollTo(0, 0)
       callback()
       return
     }
 
     disableScroll()
-    var scrollInterval =
-        setInterval(function () {
-          if (window.scrollY != 0) { window.scrollBy(0, -scrollStep) } else {
-            clearInterval(scrollInterval)
-            callback()
-            enableScroll()
-          }
-        }, 15)
+    var scrollInterval = setInterval(function () {
+      if (window.scrollY !== 0) { window.scrollBy(0, -scrollStep) } else {
+        clearInterval(scrollInterval)
+        callback()
+        enableScroll()
+      }
+    }, 15)
   }
 
   function disableScroll () {
     window.addEventListener('wheel', _preventDefault)
-    window.addEventListener('ontouchmove', _preventDefault)
+    window.addEventListener('touchmove', _preventDefault)
     window.addEventListener('keydown', _preventDefaultForScrollKeys)
   }
 
   function enableScroll () {
     window.removeEventListener('wheel', _preventDefault)
-    window.removeEventListener('ontouchmove', _preventDefault)
+    window.removeEventListener('touchmove', _preventDefault)
     window.removeEventListener('keydown', _preventDefaultForScrollKeys)
   }
 
@@ -101,7 +111,7 @@
       element.classList.remove('__eth-selected-link')
 
       var elementDir = element.getAttribute('href').substring(1)
-      if (elementDir == actualDir) {
+      if (elementDir === actualDir) {
         element.classList.add('__eth-selected-link')
       }
     })
@@ -110,20 +120,20 @@
   function requestOnload (request) {
     var contentWrapper = document.getElementById('__eth-content')
 
+    function showContent () {
+      contentWrapper.removeEventListener('transitionend', showContent)
+
+      contentWrapper.innerHTML = request.response
+      contentWrapper.style.opacity = 1
+      loadContentLinks()
+      loadContentScripts()
+    }
+
     if (request.status >= 200 && request.status < 400) {
       var contentWrapperStyle = window.getComputedStyle(contentWrapper)
-      if (contentWrapperStyle.getPropertyValue('opacity') == 0) {
+      if (contentWrapperStyle.getPropertyValue('opacity') === '0') {
         showContent()
       } else contentWrapper.addEventListener('transitionend', showContent)
-
-      function showContent () {
-        contentWrapper.removeEventListener('transitionend', showContent)
-
-        contentWrapper.innerHTML = request.response
-        contentWrapper.style.opacity = 1
-        loadContentLinks()
-        loadContentScripts()
-      }
     } else { console.log('Ethenis->loadContent()  Error: ' + this.status) }
   }
 
@@ -152,4 +162,4 @@
   function forEachElement (elements, fn) {
     for (var i = 0; i < elements.length; i++) { fn(elements[i]) }
   }
-})(__ETHENIS_CONFIG)
+})(__ETHENIS)

@@ -3,7 +3,7 @@
     "scrollAnimationDuration" : 100,
     "content" : {
         "" : ["ethenis.html", "Ethenis"],
-        "dra" : ["dra.html", "D<span style='margin-left:.15em;display:inline-block;transform: rotateY(180deg)'>R</span>A"],
+        "dra" : ["dra.html", "D<span style='display:inline-block;transform: rotateY(180deg)'>R</span>A"],
         "flat-remix-css" : ["flat-remix-css.html", "Flat Remix CSS Library"],
         "/^man\/\d*$/" : ["man.php", false]
     }

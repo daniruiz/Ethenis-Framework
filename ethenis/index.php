@@ -81,7 +81,7 @@ final class Ethenis {
                     self::generate_nav( $matches[1], $matches[2] ).
                 '</div>';
         $secondary_content =
-                '<script> Ethenis = {} </script>'.
+                '<script>__ETHENIS = {}</script>'.
                 '<div id="__eth-content">'.
                      $secondary_content.
                 '</div>';
@@ -126,9 +126,7 @@ Ethenis::exec();
         transition: opacity <?php echo Ethenis::get_config()["fadeAnimationDuration"]; ?>ms;
     }
 </style>
-<script>
-    __ETHENIS_CONFIG = <?php echo Ethenis::get_config_json(); ?>
-</script>
+<script>__ETHENIS.config = <?php echo Ethenis::get_config_json(); ?></script>
 <script src="/js/ethenis.js"></script>
 
 
