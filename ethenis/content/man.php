@@ -39,6 +39,7 @@
         |--> <span class="green-color">main.php</span>
         \--> <span class="red-color">.htaccess</span>
 		</pre>
+		<p>Ethenis uses a .htaccess file with rewrite rules, so ensure your apache is configured to read .htaccess files and mod_rewrite is enabled.<p>
 		To ensure Everything works open the web in your browser. If you downloaded the full package everything should work as <a href="https://ethenis.drasite.com" target="_blank">ethenis.drasite.com</a>.
 	<hr>
 <?php } else if ( $path == 'man/2' ) { ?>
