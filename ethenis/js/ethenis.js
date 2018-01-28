@@ -147,16 +147,30 @@
     var scripts = document.getElementById('__eth-content')
         .getElementsByTagName('script')
 
-    forEachElement(scripts, function (s) {
-      var script = document.createElement('script')
+    _loadContentScripts(scripts, 0)
+  }
 
-      if (s.src) {
-        script.src = s.src
-      } else { script.textContent = s.innerText }
+  function _loadContentScripts (scripts, i) {
+    if (i >= scripts.length) return
+    var actualScript = scripts[i]
+    var script = document.createElement('script')
 
+    if (actualScript.src) {
+      var request = new window.XMLHttpRequest()
+      request.open('GET', actualScript.src)
+      request.onload = function () {
+        script.textContent = request.response
+        document.head.appendChild(script)
+          .parentNode.removeChild(script)
+        _loadContentScripts(scripts, ++i)
+      }
+      request.send()
+    } else {
+      script.textContent = actualScript.textContent
       document.head.appendChild(script)
         .parentNode.removeChild(script)
-    })
+      _loadContentScripts(scripts, ++i)
+    }
   }
 
   function forEachElement (elements, fn) {
