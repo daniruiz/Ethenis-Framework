@@ -13,6 +13,8 @@
     window.addEventListener('popstate', loadContent)
   })()
 
+  ethenis.loadLinks = loadLinks
+
   function loadLinks (elements) {
     if (elements != null) {
       forEachElement(elements, function (element) {
