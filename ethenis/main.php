@@ -81,71 +81,70 @@
                 font-size: 20px;
                 margin: 0 20px;
             }
-            #loading {
-                display: none;
-                height: 50px;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+            @keyframes loading-element {
+                0% {
+                    width: 0;
+                }
+                5% {
+                    transform: none;
+                    width: 20%;
+                }
+                10% {
+                    transform: translateX(20vw);
+                    width: 4px;
+                }
+                35% {
+                    transform: translateX(80vw);
+                    width: 4px;
+                }
+                40% {
+                    width: 30%;
+                    transform: translateX(80vw);
+                }
+                45% {
+                    transform: translateX(110vw);
+                }
+                46% {
+                    visibility: hidden;
+                }
+                100% {
+                    visibility: hidden;
+                }
             }
-            body.loading #loading {
+
+            body.loading #loading-animation div {
                 display: block;
             }
-            @-webkit-keyframes cargando {
-                0%, 40%, 100% {
-                    -webkit-transform: scaleY(0.05);
-                }
-                20% {
-                    -webkit-transform: scaleY(1);
-                }
+
+            #loading-animation div {
+                left: 0;
+                top: 4px;
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                height: 4px;
+                border-radius: 4px;
+                background: #1875D1;
+                box-shadow: 0 1px 0 #08005c;
+                animation: loading-element 5s infinite;
             }
-            @keyframes cargando {
-                0%, 40%, 100% {
-                    transform: scaleY(0.05);
-                    -webkit-transform: scaleY(0.05);
-                }
-                20% {
-                    transform: scaleY(1);
-                    -webkit-transform: scaleY(1);
-                }
+
+            #loading-animation div:nth-child(2) {
+                margin-left: -8px;
+                animation-delay: .25s;
             }
-            #loading div {
-                box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
-                height: 100%;
-                width: 8px;
-                display: inline-block;
-                margin-left: 2px;
-                -webkit-animation: cargando .8s infinite ease-in-out;
-                animation: cargando .8s infinite ease-in-out;
+
+            #loading-animation div:nth-child(3) {
+                margin-left: -16px;
+                animation-delay: .5s;
             }
-            #loading div:nth-child(1) {
-                background: #0000ff;
-                -webkit-animation-delay: -.5s;
-                animation-delay: -.5s;
+            #loading-animation div:nth-child(4) {
+                margin-left: -24px;
+                animation-delay: .75s;
             }
-            #loading div:nth-child(2) {
-                background: #3873d7;
-                -webkit-animation-delay: -.4s;
-                animation-delay: -.4s;
-            }
-            #loading div:nth-child(3) {
-                background: #269687;
-                -webkit-animation-delay: -.3s;
-                animation-delay: -.3s;
-            }
-            #loading div:nth-child(4) {
-                background: #ba174e;
-                -webkit-animation-delay: -.2s;
-                animation-delay: -.2s;
-            }
-            #loading div:nth-child(5) {
-                background: #9f2b32;
-                -webkit-animation-delay: -.1s;
-                animation-delay: -.1s;
-            }
-            #loading div:nth-child(6) {
-                background: #7c4598;
+            #loading-animation div:nth-child(5) {
+                margin-left: -32px;
+                animation-delay: 1s;
             }
             @media screen and (max-width: 450px) {
                 .nav-link-content {
@@ -161,6 +160,12 @@
             <{ link-template }><span class="nav-link-content"><{ link-text }></span><{ /link-template }>
         </nav>
         <{ content }>
-        <div id="loading"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <div id="loading-animation">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </body>
 </html>

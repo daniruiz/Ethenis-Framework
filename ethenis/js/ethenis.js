@@ -30,9 +30,8 @@
     var previousLocation = location.pathname
     return function () {
       if (previousLocation !== location.pathname) {
-        scrollToTop(function () {
-          document.getElementById('__eth-content').style.opacity = '0'
-        })
+      	document.getElementById('__eth-content').style.opacity = '0'
+        scrollToTop()
 
         execOnPageChangeFunction()
         changeNavSelectedLink()
@@ -66,12 +65,11 @@
     ethenis.onPageChange = null
   }
 
-  function scrollToTop (callback) {
+  function scrollToTop () {
     var scrollDuration = config.scrollAnimationDuration // ms
     var scrollStep = window.scrollY / (scrollDuration / 15)
     if (scrollStep === 0) {
       window.scrollTo(0, 0)
-      callback()
       return
     }
 
@@ -79,7 +77,6 @@
       if (window.scrollY > 0) { window.scrollBy(0, -scrollStep) } else {
         window.scrollTo(0, 0)
         clearInterval(scrollInterval)
-        callback()
       }
     }, 15)
   }
