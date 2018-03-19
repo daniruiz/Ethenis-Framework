@@ -136,7 +136,6 @@
 		max-width: 500px;
 		margin: 40px auto;
 		width: 95%;
-		position: relative;
 	}
 	input[type="text"] {
 		width: 50%;
@@ -209,6 +208,7 @@
     article .red-button, article .blue-button, article .green-button, article .rounded-button {
     	margin: 20px auto 0;
     	display: block;
+    	position: static;
     }
     @media screen and (max-height: 720px){
         #description {
@@ -254,7 +254,7 @@
 			<h1>Flat Remix<br> CSS Library</h1>
 			<hr>
 			<h4>
-				A simple css library that provides a set of predefined elements for a rapid web applications development. It Follows a modern design using "flat" colors with high contrasts and sharp borders.
+				A tiny CSS library that provides a set of predesigned elements for a fast web development. It follows a modern "flat" design using high contrasts and sharp borders.
 			</h4>
 		</section>
 		<div class="paper" id="first-section">
@@ -278,7 +278,7 @@
 				        background: #7c4598;animation-delay: 2.3s;"></div>
 			</div>
 		</section>
-		<section class="paper">
+		<section class="paper" style="position:relative">
 			<h5>Express yourshelf</h5>
 			<input type="text" placeholder="<< Text goes here >>">
 			<textarea placeholder="Write here"></textarea>
