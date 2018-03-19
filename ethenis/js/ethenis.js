@@ -1,64 +1,69 @@
 /* Using standard https://standardjs.com/ */
-/* global __ETHENIS */
+/* global __ETHENIS, history, location, XMLHttpRequest */
 
-(function (ethenis) {
+(function (ethenis, config) {
   'use strict'
 
-  var config = ethenis.config;
+  ;(function (history) {
+    var pushState = history.pushState
+    history.pushState = function () {
+      pushState.apply(history, arguments)
+      loadContent()
+    }
+  })(window.history)
 
-  (function () {
-    var linkElements = document.getElementsByClassName('__eth-link')
-    loadLinks(linkElements)
-
-    window.addEventListener('popstate', loadContent)
-  })()
-
+  loadLinks(document.getElementsByClassName('__eth-link'))
   ethenis.loadLinks = loadLinks
 
   function loadLinks (elements) {
     if (elements != null) {
       forEachElement(elements, function (element) {
-        element.onclick = function (event) {
+        element.addEventListener('click', function (event) {
           event.preventDefault()
-
-          window.history.pushState('', '', element.getAttribute('href'))
-          loadContent()
-        }
+          history.pushState('', '', element.getAttribute('href'))
+        }, false)
       })
     }
   }
 
-  function loadContent () {
-    scrollToTop(function () {
-      document.getElementById('__eth-content').style.opacity = 0
-    })
+  var loadContent = (function () {
+    var previousLocation = location.pathname
+    return function () {
+      if (previousLocation !== location.pathname) {
+        scrollToTop(function () {
+          document.getElementById('__eth-content').style.opacity = '0'
+        })
 
-    execOnPageChangeFunction()
-    changeNavSelectedLink()
-    document.body.classList.add('loading')
+        execOnPageChangeFunction()
+        changeNavSelectedLink()
+        document.body.classList.add('loading')
 
-    var request = new window.XMLHttpRequest()
-    var path = window.location.pathname +
-        '?ajax=true&_=' + new Date().getTime()
+        var request = new XMLHttpRequest()
+        var path = location.pathname +
+          '?ajax=true&_=' + new Date().getTime()
 
-    request.open('GET', path, true)
-    request.onload = function () { requestOnload(request) }
-    request.onerror = function () {
-      console.log('Ethenis->loadContent()  FatalError')
-    }
-    request.onreadystatechange = function () {
-      if (request.readyState === 4) {
-        document.body.classList.remove('loading')
+        request.open('GET', path, true)
+        request.onload = function () { requestOnload(request) }
+        request.onerror = function () {
+          console.error('Ethenis->loadContent()  Network Error')
+        }
+        request.onreadystatechange = function () {
+          if (request.readyState === 4) {
+            document.body.classList.remove('loading')
+          }
+        }
+        request.send()
       }
+      previousLocation = location.pathname
     }
-    request.send()
-  }
+  })()
+
+  window.addEventListener('popstate', loadContent, true)
 
   function execOnPageChangeFunction () {
-    if (typeof ethenis.onPageChange === 'function') {
-      ethenis.onPageChange()
-      ethenis.onPageChange = function () {}
-    }
+    if (typeof ethenis.onPageChange !== 'function') return
+    ethenis.onPageChange()
+    ethenis.onPageChange = null
   }
 
   function scrollToTop (callback) {
@@ -70,40 +75,13 @@
       return
     }
 
-    disableScroll()
     var scrollInterval = setInterval(function () {
-      if (window.scrollY !== 0) { window.scrollBy(0, -scrollStep) } else {
+      if (window.scrollY > 0) { window.scrollBy(0, -scrollStep) } else {
+        window.scrollTo(0, 0)
         clearInterval(scrollInterval)
         callback()
-        enableScroll()
       }
     }, 15)
-  }
-
-  function disableScroll () {
-    window.addEventListener('wheel', _preventDefault)
-    window.addEventListener('touchmove', _preventDefault)
-    window.addEventListener('keydown', _preventDefaultForScrollKeys)
-  }
-
-  function enableScroll () {
-    window.removeEventListener('wheel', _preventDefault)
-    window.removeEventListener('touchmove', _preventDefault)
-    window.removeEventListener('keydown', _preventDefaultForScrollKeys)
-  }
-
-  function _preventDefault (e) {
-    e = e || window.event
-    if (e.preventDefault) { e.preventDefault() }
-    e.returnValue = false
-  }
-
-  function _preventDefaultForScrollKeys (e) {
-    var arrowKeys = { 37: 1, 38: 1, 39: 1, 40: 1 }
-    if (arrowKeys[e.keyCode]) {
-      _preventDefault(e)
-      return false
-    }
   }
 
   function changeNavSelectedLink () {
@@ -131,12 +109,12 @@
       loadContentScripts()
     }
 
-    if (request.status >= 200 && request.status < 400) {
+    if (request.status >= 200 && request.status <= 404) {
       var contentWrapperStyle = window.getComputedStyle(contentWrapper)
       if (contentWrapperStyle.getPropertyValue('opacity') === '0') {
         showContent()
       } else contentWrapper.addEventListener('transitionend', showContent)
-    } else { console.log('Ethenis->loadContent()  Error: ' + this.status) }
+    } else { console.error('Ethenis->loadContent()  Error: ' + this.status) }
   }
 
   function loadContentLinks () {
@@ -147,7 +125,7 @@
 
   function loadContentScripts () {
     var scripts = document.getElementById('__eth-content')
-        .getElementsByTagName('script')
+      .getElementsByTagName('script')
 
     _loadContentScripts(scripts, 0)
   }
@@ -158,7 +136,7 @@
     var script = document.createElement('script')
 
     if (actualScript.src) {
-      var request = new window.XMLHttpRequest()
+      var request = new XMLHttpRequest()
       request.open('GET', actualScript.src)
       request.onload = function () {
         script.textContent = request.response
@@ -178,4 +156,4 @@
   function forEachElement (elements, fn) {
     for (var i = 0; i < elements.length; i++) { fn(elements[i]) }
   }
-})(__ETHENIS)
+})(__ETHENIS, __ETHENIS.config)
