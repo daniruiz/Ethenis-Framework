@@ -53,17 +53,17 @@ final class Ethenis
             if ($secondary_content_dir == "content/404.html")
                 http_response_code(404);
             $secondary_content = file_get_contents($secondary_content_dir);
-            $main_content = file_get_contents("main.php");
+            $main_content = self::get_main_content();
             $final_content = self::replace_special_variables($main_content,
                 $secondary_content);
             $final_content .= '<style>
                 #__eth-content {
                     opacity: 1;
-                    transition: opacity <?php echo Ethenis::get_config()["fadeAnimationDuration"]; ?>ms;
+                    transition: opacity ' . self::get_config()["fadeAnimationDuration"] . 'ms;
                 }
             </style>
-            <script>__ETHENIS.config = <?php echo Ethenis::get_config_json(); ?></script>
-            <script src="/js/ethenis.js"></script>';
+            <script>__ETHENIS.config = ' . self::get_config_json() . '</script>
+            <script src="/content/view/js/ethenis.js"></script>';
             self::$generated_code = ' ?>' . $final_content . '<?php ';
         }
     }
@@ -84,33 +84,58 @@ final class Ethenis
         return "content/" . $dir;
     }
 
-    private static function replace_special_variables($main_content,
-                                                      $secondary_content)
+    private static function get_main_content()
     {
+        function is_template($content)
+        {
+            return preg_match('/<{\s*\/?content\s*}>/', $content);
+        }
+
+        $main = file_get_contents("content/main.php");
+        if (!is_template($main)) {
+            preg_match_all('/(?:(?:include|require)(?:_once)?\(([\'"]))([^\1\))]*)(\1\))/', $main, $matches, PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $content = ' ?>' . file_get_contents($match[2]) . '<?php ';
+                if (is_template($content)) {
+                    $main = str_replace($match[0], $content, $main);
+                    break;
+                }
+            }
+        }
+        return $main;
+    }
+
+    private static function replace_special_variables($main_content, $secondary_content)
+    {
+        $final_content = $main_content;
+
         preg_match(
-            "/(?:<{ link-template }>)" .
-            "(.*)(?:<{ link-text }>)(.*)" .
-            "(?:<{ \/link-template }>)/",
+            "/(?:<{\s*link-template\s*}>)" .
+            "(.*)(?:<{\s*link-text\s*}>)(.*)" .
+            "(?:<{\s*\/link-template\s*}>)/",
             $main_content, $matches);
 
-        if (!isset($matches[1])) $matches[1] = "";
-        if (!isset($matches[2])) $matches[2] = "";
-        $nav_html =
-            '<div id="__eth-nav">' .
-            self::generate_nav($matches[1], $matches[2]) .
-            '</div>';
+
+        if (!empty($matches[0])) {
+            if (!isset($matches[1])) $matches[1] = "";
+            if (!isset($matches[2])) $matches[2] = "";
+
+            $nav_html =
+                '<div id="__eth-nav">' .
+                self::generate_nav($matches[1], $matches[2]) .
+                '</div>';
+
+            $final_content = str_replace($matches[0],
+                $nav_html, $final_content);
+        }
+
         $secondary_content =
             '<script>__ETHENIS = {}</script>' .
             '<div id="__eth-content">' .
             $secondary_content .
             '</div>';
 
-        $final_content = preg_replace(
-            "/<{ link-template }>" .
-            ".*<{ link-text }>.*" .
-            "<{ \/link-template }>/",
-            $nav_html, $main_content);
-        $final_content = str_replace("<{ content }>",
+        $final_content = preg_replace("/<{\s*\/?content\s*}>/",
             $secondary_content, $final_content);
         return $final_content;
     }
@@ -140,3 +165,5 @@ final class Ethenis
 }
 
 eval(Ethenis::exec());
+
+?>

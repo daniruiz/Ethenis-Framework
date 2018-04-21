@@ -1,5 +1,16 @@
+// ==ClosureCompiler==
+// @output_file_name default.js
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// @js_externs var __ETHENIS
+// @js_externs __ETHENIS.config
+// @js_externs __ETHENIS.config.scrollAnimationDuration
+// @js_externs __ETHENIS.config.fadeAnimationDuration
+// @js_externs __ETHENIS.loadLinks
+// @js_externs __ETHENIS.onPageChange
+// ==/ClosureCompiler==
+
 /* Using standard https://standardjs.com/ */
-/* global __ETHENIS, history, location, XMLHttpRequest */
+/* global __ETHENIS, history, location, XMLHttpRequest, Event */
 
 (function (ethenis, config) {
   'use strict'
@@ -30,7 +41,10 @@
     var previousLocation = location.pathname
     return function () {
       if (previousLocation !== location.pathname) {
-      	document.getElementById('__eth-content').style.opacity = '0'
+        document.getElementById('__eth-content').style.opacity = '0'
+        setTimeout(function () {
+          document.getElementById('__eth-content').dispatchEvent(new Event('fadetransitionend'))
+        }, config.fadeAnimationDuration)
         scrollToTop()
 
         execOnPageChangeFunction()
@@ -98,19 +112,19 @@
     var contentWrapper = document.getElementById('__eth-content')
 
     function showContent () {
-      contentWrapper.removeEventListener('transitionend', showContent)
+      contentWrapper.removeEventListener('fadetransitionend', showContent, false)
 
       contentWrapper.innerHTML = request.response
       contentWrapper.style.opacity = 1
-      loadContentLinks()
       loadContentScripts()
+      loadContentLinks()
     }
 
     if (request.status >= 200 && request.status <= 404) {
       var contentWrapperStyle = window.getComputedStyle(contentWrapper)
       if (contentWrapperStyle.getPropertyValue('opacity') === '0') {
         showContent()
-      } else contentWrapper.addEventListener('transitionend', showContent)
+      } else contentWrapper.addEventListener('fadetransitionend', showContent, false)
     } else { console.error('Ethenis->loadContent()  Error: ' + this.status) }
   }
 
