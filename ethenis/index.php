@@ -63,7 +63,7 @@ final class Ethenis
                 }
             </style>
             <script>__ETHENIS.config = ' . self::get_config_json() . '</script>
-            <script src="/content/view/js/ethenis.js"></script>';
+            <script src="/js/ethenis.js"></script>';
             self::$generated_code = ' ?>' . $final_content . '<?php ';
         }
     }
@@ -91,7 +91,7 @@ final class Ethenis
             return preg_match('/<{\s*\/?content\s*}>/', $content);
         }
 
-        $main = file_get_contents("content/main.php");
+        $main = file_get_contents("main.php");
         if (!is_template($main)) {
             preg_match_all('/(?:(?:include|require)(?:_once)?\(([\'"]))([^\1\))]*)(\1\))/', $main, $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {

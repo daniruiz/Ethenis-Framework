@@ -1,66 +1,51 @@
-// ==ClosureCompiler==
-// @output_file_name default.js
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @js_externs var __ETHENIS
-// @js_externs __ETHENIS.config
-// @js_externs __ETHENIS.config.scrollAnimationDuration
-// @js_externs __ETHENIS.config.fadeAnimationDuration
-// @js_externs __ETHENIS.loadLinks
-// @js_externs __ETHENIS.onPageChange
-// ==/ClosureCompiler==
+'use strict'
 
-/* Using standard https://standardjs.com/ */
-/* global __ETHENIS, history, location, XMLHttpRequest, Event */
-
-(function (ethenis, config) {
-  'use strict'
-
-  ;(function (history) {
-    var pushState = history.pushState
+;((ethenis, config) => {
+  ;(history => {
+    let pushState = history.pushState
     history.pushState = function () {
       pushState.apply(history, arguments)
       loadContent()
     }
   })(window.history)
 
-  loadLinks(document.getElementsByClassName('__eth-link'))
-  ethenis.loadLinks = loadLinks
-
   function loadLinks (elements) {
-    if (elements != null) {
-      forEachElement(elements, function (element) {
-        element.addEventListener('click', function (event) {
-          event.preventDefault()
-          history.pushState('', '', element.getAttribute('href'))
-        }, false)
-      })
+    if (elements instanceof HTMLElement) elements = [elements]
+    let numElements = elements !== undefined ? (elements.length !== undefined ? elements.length : 0) : 0
+    for (let i = 0; i < numElements; i++) {
+      let element = (elements[i] || elements)
+      element.addEventListener('click', event => {
+        event.preventDefault()
+        history.pushState('', '', element.getAttribute('href'))
+      }, false)
     }
   }
 
-  var loadContent = (function () {
-    var previousLocation = location.pathname
-    return function () {
-      if (previousLocation !== location.pathname) {
-        document.getElementById('__eth-content').style.opacity = '0'
-        setTimeout(function () {
-          document.getElementById('__eth-content').dispatchEvent(new Event('fadetransitionend'))
-        }, config.fadeAnimationDuration)
-        scrollToTop()
+  let loadContent = (() => {
+    let previousLocation = location.pathname
+    return function (reload = false) {
+      if (previousLocation !== location.pathname || reload) {
+        scrollToTop(() => {
+          document.getElementById('__eth-content').style.opacity = '0'
+          setTimeout(() => {
+            document.getElementById('__eth-content').dispatchEvent(new Event('fadetransitionend'))
+          }, config.fadeAnimationDuration)
+        })
 
         execOnPageChangeFunction()
         changeNavSelectedLink()
         document.body.classList.add('loading')
 
-        var request = new XMLHttpRequest()
-        var path = location.pathname +
+        let request = new XMLHttpRequest()
+        let path = location.pathname +
           '?ajax=true&_=' + new Date().getTime()
 
         request.open('GET', path, true)
-        request.onload = function () { requestOnload(request) }
-        request.onerror = function () {
+        request.onload = () => { requestOnload(request) }
+        request.onerror = () => {
           console.error('Ethenis->loadContent()  Network Error')
         }
-        request.onreadystatechange = function () {
+        request.onreadystatechange = () => {
           if (request.readyState === 4) {
             document.body.classList.remove('loading')
           }
@@ -71,37 +56,36 @@
     }
   })()
 
-  window.addEventListener('popstate', loadContent, true)
-
-  function execOnPageChangeFunction () {
-    if (typeof ethenis.onPageChange !== 'function') return
-    ethenis.onPageChange()
-    ethenis.onPageChange = null
+  function reloadContent () {
+    loadContent(true)
   }
 
-  function scrollToTop () {
-    var scrollDuration = config.scrollAnimationDuration // ms
-    var scrollStep = window.scrollY / (scrollDuration / 15)
-    if (scrollStep === 0) {
+  function scrollToTop (fnc) {
+    if (isNaN(config.scrollAnimationDuration) || config.scrollAnimationDuration <= 0) {
       window.scrollTo(0, 0)
+      fnc()
       return
     }
 
-    var scrollInterval = setInterval(function () {
-      if (window.scrollY > 0) { window.scrollBy(0, -scrollStep) } else {
-        window.scrollTo(0, 0)
+    let minStep = 0.01
+    let scrollStep = Math.max(window.scrollY / (config.scrollAnimationDuration / 15), minStep)
+
+    let scrollInterval = setInterval(() => {
+      if (window.scrollY > 0) window.scrollBy(0, -scrollStep)
+      else {
         clearInterval(scrollInterval)
+        fnc()
       }
     }, 15)
   }
 
   function changeNavSelectedLink () {
-    var linkElements = document.getElementsByClassName('__eth-link')
-    var actualDir = window.location.pathname.substring(1)
-    forEachElement(linkElements, function (element) {
+    let linkElements = document.getElementsByClassName('__eth-link')
+    let actualDir = window.location.pathname.substring(1)
+    ;[].forEach.call(linkElements, element => {
       element.classList.remove('__eth-selected-link')
 
-      var elementDir = element.getAttribute('href').substring(1)
+      let elementDir = element.getAttribute('href').substring(1)
       if (elementDir === actualDir) {
         element.classList.add('__eth-selected-link')
       }
@@ -109,7 +93,7 @@
   }
 
   function requestOnload (request) {
-    var contentWrapper = document.getElementById('__eth-content')
+    let contentWrapper = document.getElementById('__eth-content')
 
     function showContent () {
       contentWrapper.removeEventListener('fadetransitionend', showContent, false)
@@ -118,24 +102,34 @@
       contentWrapper.style.opacity = 1
       loadContentScripts()
       loadContentLinks()
+      execOnLoad()
     }
 
     if (request.status >= 200 && request.status <= 404) {
-      var contentWrapperStyle = window.getComputedStyle(contentWrapper)
+      let contentWrapperStyle = window.getComputedStyle(contentWrapper)
       if (contentWrapperStyle.getPropertyValue('opacity') === '0') {
         showContent()
       } else contentWrapper.addEventListener('fadetransitionend', showContent, false)
-    } else { console.error('Ethenis->loadContent()  Error: ' + this.status) }
+    } else { console.error('Ethenis->loadContent()  Error: ' + request.status) }
+  }
+
+  function execOnPageChangeFunction () {
+    if (typeof ethenis.onPageChange === 'function') ethenis.onPageChange()
+    ethenis.onPageChange = null
+  }
+
+  function execOnLoad () {
+    if (typeof ethenis.onLoad === 'function') ethenis.onLoad()
   }
 
   function loadContentLinks () {
-    var linkElements = document.querySelectorAll('#__eth-content .__eth-link')
+    let linkElements = document.querySelectorAll('#__eth-content .__eth-link')
 
     loadLinks(linkElements)
   }
 
   function loadContentScripts () {
-    var scripts = document.getElementById('__eth-content')
+    let scripts = document.getElementById('__eth-content')
       .getElementsByTagName('script')
 
     _loadContentScripts(scripts, 0)
@@ -143,13 +137,13 @@
 
   function _loadContentScripts (scripts, i) {
     if (i >= scripts.length) return
-    var actualScript = scripts[i]
-    var script = document.createElement('script')
+    let actualScript = scripts[i]
+    let script = document.createElement('script')
 
     if (actualScript.src) {
-      var request = new XMLHttpRequest()
+      let request = new XMLHttpRequest()
       request.open('GET', actualScript.src)
-      request.onload = function () {
+      request.onload = () => {
         script.textContent = request.response
         document.head.appendChild(script)
           .parentNode.removeChild(script)
@@ -164,7 +158,11 @@
     }
   }
 
-  function forEachElement (elements, fn) {
-    for (var i = 0; i < elements.length; i++) { fn(elements[i]) }
-  }
+  loadLinks(document.getElementsByClassName('__eth-link'))
+  ethenis.loadLinks = loadLinks
+  ethenis.reloadContent = reloadContent
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+  execOnLoad()
+  window.addEventListener('popstate', loadContent, true)
+
 })(__ETHENIS, __ETHENIS.config)
