@@ -70,8 +70,8 @@ final class Ethenis
 
     private static function get_secondary_content_dir()
     {
-        $dir = "";
-        foreach (self::$config["content"] as $pattern => $values) {
+        $dir = '';
+        foreach (self::$config['content'] as $pattern => $values) {
             if (self::$path == $pattern ||
                 (self::is_pattern($pattern) &&
                     preg_match($pattern, self::$path))) {
@@ -79,9 +79,9 @@ final class Ethenis
                 break;
             }
         }
-        if ($dir == "")
-            $dir = "404.html";
-        return "content/" . $dir;
+        if ($dir == '')
+            $dir = self::$config['404'];
+        return 'content/' . $dir;
     }
 
     private static function get_main_content()
@@ -91,7 +91,7 @@ final class Ethenis
             return preg_match('/<{\s*\/?content\s*}>/', $content);
         }
 
-        $main = file_get_contents("main.php");
+        $main = file_get_contents('content/main.php');
         if (!is_template($main)) {
             preg_match_all('/(?:(?:include|require)(?:_once)?\(([\'"]))([^\1\))]*)(\1\))/', $main, $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
@@ -110,15 +110,15 @@ final class Ethenis
         $final_content = $main_content;
 
         preg_match(
-            "/(?:<{\s*link-template\s*}>)" .
-            "(.*)(?:<{\s*link-text\s*}>)(.*)" .
-            "(?:<{\s*\/link-template\s*}>)/",
+            '/(?:<{\s*link-template\s*}>)' .
+            '(.*)(?:<{\s*link-text\s*}>)(.*)' .
+            '(?:<{\s*\/link-template\s*}>)/',
             $main_content, $matches);
 
 
         if (!empty($matches[0])) {
-            if (!isset($matches[1])) $matches[1] = "";
-            if (!isset($matches[2])) $matches[2] = "";
+            if (!isset($matches[1])) $matches[1] = '';
+            if (!isset($matches[2])) $matches[2] = '';
 
             $nav_html =
                 '<div id="__eth-nav">' .
@@ -135,15 +135,15 @@ final class Ethenis
             $secondary_content .
             '</div>';
 
-        $final_content = preg_replace("/<{\s*\/?content\s*}>/",
+        $final_content = preg_replace('/<{\s*\/?content\s*}>/',
             $secondary_content, $final_content);
         return $final_content;
     }
 
     private static function generate_nav($pre_link_html, $post_link_html)
     {
-        $nav = "";
-        foreach (self::$config["content"] as $dir => $values) {
+        $nav = '';
+        foreach (self::$config['content'] as $dir => $values) {
             if (end($values) != false &&
                 !self::is_pattern($dir) && isset($values[1])) {
                 $link_class = '__eth-link' .
@@ -160,7 +160,7 @@ final class Ethenis
 
     private static function is_pattern($pattern)
     {
-        return preg_match("/\/.*\//", $pattern);
+        return preg_match('/\/.*\//', $pattern);
     }
 }
 

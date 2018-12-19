@@ -120,6 +120,10 @@
 
   function execOnLoad () {
     if (typeof ethenis.onLoad === 'function') ethenis.onLoad()
+    if (typeof ethenis.onLoadOnce === 'function') {
+      ethenis.onLoadOnce()
+      ethenis.onLoadOnce = null
+    }
   }
 
   function loadContentLinks () {
