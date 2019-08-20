@@ -5,6 +5,9 @@
     let pushState = history.pushState
     history.pushState = function () {
       pushState.apply(history, arguments)
+      const pathName = location.pathname
+      if (pathName.endsWith('/'))
+        history.replaceState('', '', pathName.slice(0, -1))
       loadContent()
     }
   })(window.history)
@@ -81,7 +84,7 @@
 
   function changeNavSelectedLink () {
     let linkElements = document.getElementsByClassName('__eth-link')
-    let actualDir = window.location.pathname.substring(1)
+    let actualDir = location.pathname.substring(1)
     ;[].forEach.call(linkElements, element => {
       element.classList.remove('__eth-selected-link')
 
