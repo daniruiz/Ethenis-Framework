@@ -6,5 +6,6 @@
         "dra" : ["dra.html", "D<span style='display:inline-block;transform: rotateY(180deg) translate(-2px)'>R</span>A"],
         "flat-remix-css" : ["flat-remix-css.html", "Flat Remix CSS Library"],
         "/^man\/\d*$/" : ["man.php", false]
-    }
+    },
+    "404" : "404.html"
 }
