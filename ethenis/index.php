@@ -1,5 +1,5 @@
 <?php
-header("Content-Type: text/html;charset=utf-8");
+header('Content-Type: text/html;charset=utf-8');
 
 final class Ethenis
 {
@@ -8,49 +8,42 @@ final class Ethenis
     private static $generated_code;
 
 
-    public static function exec()
-    {
+    public static function exec() {
         self::$path = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 1);
         self::load_config();
         self::load_content();
         return self::generated_code();
     }
 
-    public static function generated_code()
-    {
+    public static function generated_code() {
         return self::$generated_code;
     }
 
-    public static function get_config()
-    {
+    public static function get_config() {
         return self::$config;
     }
 
-    public static function get_config_json()
-    {
+    public static function get_config_json() {
         return json_encode(self::$config);
     }
 
-    public static function get_path()
-    {
+    public static function get_path() {
         return self::$path;
     }
 
 
-    private static function load_config()
-    {
-        $config_string = file_get_contents("config");
-        $config_json = str_replace("\\", "\\\\", $config_string);
+    private static function load_config() {
+        $config_string = file_get_contents('config');
+        $config_json = str_replace('\\', '\\\\', $config_string);
         self::$config = json_decode($config_json, true);
     }
 
-    private static function load_content()
-    {
+    private static function load_content() {
         $secondary_content_dir = self::get_secondary_content_dir();
         if (isset($_GET['ajax']) && $_GET['ajax']) {
             self::$generated_code = ' ?>' . file_get_contents($secondary_content_dir) . '<?php ';
         } else {
-            if ($secondary_content_dir == "content/404.html")
+            if ($secondary_content_dir == 'content/404.html')
                 http_response_code(404);
             $secondary_content = file_get_contents($secondary_content_dir);
             $main_content = self::get_main_content();
@@ -59,7 +52,7 @@ final class Ethenis
             $final_content .= '<style>
                 #__eth-content {
                     opacity: 1;
-                    transition: opacity ' . self::get_config()["fadeAnimationDuration"] . 'ms;
+                    transition: opacity ' . self::get_config()['fadeAnimationDuration'] . 'ms;
                 }
             </style>
             <script>__ETHENIS.config = ' . self::get_config_json() . '</script>
@@ -68,8 +61,7 @@ final class Ethenis
         }
     }
 
-    private static function get_secondary_content_dir()
-    {
+    private static function get_secondary_content_dir() {
         $dir = '';
         foreach (self::$config['content'] as $pattern => $values) {
             if (self::$path == $pattern ||
@@ -84,8 +76,7 @@ final class Ethenis
         return 'content/' . $dir;
     }
 
-    private static function get_main_content()
-    {
+    private static function get_main_content() {
         function is_template($content)
         {
             return preg_match('/<{\s*\/?content\s*}>/', $content);
@@ -105,8 +96,7 @@ final class Ethenis
         return $main;
     }
 
-    private static function replace_special_variables($main_content, $secondary_content)
-    {
+    private static function replace_special_variables($main_content, $secondary_content) {
         $final_content = $main_content;
 
         preg_match(
@@ -140,8 +130,7 @@ final class Ethenis
         return $final_content;
     }
 
-    private static function generate_nav($pre_link_html, $post_link_html)
-    {
+    private static function generate_nav($pre_link_html, $post_link_html) {
         $nav = '';
         foreach (self::$config['content'] as $dir => $values) {
             if (end($values) != false &&
@@ -158,8 +147,7 @@ final class Ethenis
         return $nav;
     }
 
-    private static function is_pattern($pattern)
-    {
+    private static function is_pattern($pattern) {
         return preg_match('/\/.*\//', $pattern);
     }
 }
