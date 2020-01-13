@@ -170,6 +170,6 @@
   ethenis.reloadContent = reloadContent
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
   execOnLoad()
-  window.addEventListener('popstate', loadContent, true)
+  window.addEventListener('popstate', () => { loadContent() }, true)
 
 })(__ETHENIS, __ETHENIS.config)
