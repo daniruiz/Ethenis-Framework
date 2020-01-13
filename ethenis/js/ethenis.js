@@ -113,7 +113,7 @@
       if (contentWrapperStyle.getPropertyValue('opacity') === '0') {
         showContent()
       } else contentWrapper.addEventListener('fadetransitionend', showContent, false)
-    } else { console.error('Ethenis->loadContent()  Error: ' + request.status) }
+    } else { console.error('Ethenis->requestOnload()  Error: ' + request.status) }
   }
 
   function execOnPageChangeFunction () {
