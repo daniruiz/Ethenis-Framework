@@ -64,27 +64,25 @@ final class Ethenis
     private static function get_secondary_content_dir() {
         $dir = '';
         foreach (self::$config['content'] as $pattern => $values) {
-            if (self::$path == $pattern ||
-                (self::is_pattern($pattern) &&
-                    preg_match($pattern, self::$path))) {
+            if (self::$path == $pattern || (self::is_pattern($pattern) && preg_match($pattern, self::$path))) {
                 $dir = $values[0];
                 break;
             }
         }
         if ($dir == '')
             $dir = self::$config['404'];
-        return 'content/' . $dir;
+        return "content/${dir}";
     }
 
     private static function get_main_content() {
-        function is_template($content)
-        {
+        function is_template($content) {
             return preg_match('/<{\s*\/?content\s*}>/', $content);
         }
 
         $main = file_get_contents('content/main.php');
         if (!is_template($main)) {
-            preg_match_all('/(?:(?:include|require)(?:_once)?\(([\'"]))([^\1\))]*)(\1\))/', $main, $matches, PREG_SET_ORDER);
+            preg_match_all('/(?:(?:include|require)(?:_once)?\(([\'"]))([^\1\))]*)(\1\))/',
+                    $main, $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
                 $content = ' ?>' . file_get_contents($match[2]) . '<?php ';
                 if (is_template($content)) {
@@ -125,8 +123,7 @@ final class Ethenis
             $secondary_content .
             '</div>';
 
-        $final_content = preg_replace('/<{\s*\/?content\s*}>/',
-            $secondary_content, $final_content);
+        $final_content = preg_replace('/<{\s*\/?content\s*}>/', $secondary_content, $final_content);
         return $final_content;
     }
 
@@ -135,9 +132,7 @@ final class Ethenis
         foreach (self::$config['content'] as $dir => $values) {
             if (end($values) != false &&
                 !self::is_pattern($dir) && isset($values[1])) {
-                $link_class = '__eth-link' .
-                    ((self::$path == $dir)
-                        ? ' __eth-selected-link' : '');
+                $link_class = '__eth-link' . ((self::$path == $dir) ? ' __eth-selected-link' : '');
                 $nav .=
                     '<a class="' . $link_class . '" href="/' . $dir . '">' .
                     $pre_link_html . $values[1] . $post_link_html .
