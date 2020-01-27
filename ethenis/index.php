@@ -47,17 +47,7 @@ final class Ethenis
                 http_response_code(404);
             $secondary_content = file_get_contents($secondary_content_dir);
             $main_content = self::get_main_content();
-            $final_content = self::replace_special_variables($main_content,
-                $secondary_content);
-            $final_content .= '<style>
-                #__eth-content {
-                    opacity: 1;
-                    transition: opacity ' . self::get_config()['fadeAnimationDuration'] . 'ms;
-                }
-            </style>
-            <script>__ETHENIS.config = ' . self::get_config_json() . '</script>
-            <script src="/js/ethenis.js"></script>';
-            self::$generated_code = ' ?>' . $final_content . '<?php ';
+            self::generate_final_content($main_content, $secondary_content);
         }
     }
 
@@ -92,6 +82,25 @@ final class Ethenis
             }
         }
         return $main;
+    }
+
+    private static function generate_final_content($main_content, $secondary_content) {
+        $final_content = self::replace_special_variables($main_content, $secondary_content);
+        $fade_animation_duration = self::get_config()['fadeAnimationDuration'];
+        $config_json = self::get_config_json();
+        $replace = <<< EOF
+        <style>
+            #__eth-content {
+                opacity: 1;
+                transition: opacity ${fade_animation_duration}ms;
+            }
+        </style>
+        <script>__ETHENIS.config = ${config_json}</script>
+        <script src="/js/ethenis.js"></script>
+    </body>
+EOF;
+        $final_content = preg_replace('/ *<\/body>/', $replace, $final_content);
+        self::$generated_code = ' ?>' . $final_content . '<?php ';
     }
 
     private static function replace_special_variables($main_content, $secondary_content) {
