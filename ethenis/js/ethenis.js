@@ -20,6 +20,12 @@
 
     reloadContent: () => { ethenis._loadContent(true) },
 
+    loadPage: path => {
+        history.pushState('', '', path)
+        history.replaceState('', '', location.pathname.replace(/\/+$/, ''))
+        ethenis._loadContent()
+    },
+
     loadLinks: elements => {
       if (elements instanceof HTMLElement)
         elements = [elements]
@@ -27,11 +33,7 @@
       ;[...elements].forEach(element => {
         element.addEventListener('click', event => {
           event.preventDefault()
-          let href = element.getAttribute('href')
-          if (href !== '/')
-            href = href.replace(/\/+$/, '')
-          history.pushState('', '', href)
-          ethenis._loadContent()
+          ethenis.loadPage(element.getAttribute('href'))
         })
       })
     },
