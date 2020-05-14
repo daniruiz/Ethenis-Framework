@@ -109,7 +109,7 @@ EOF;
         preg_match(
             '/(?:<{\s*link-template\s*}>)' .
             '(.*)(?:<{\s*link-text\s*}>)(.*)' .
-            '(?:<{\s*\/link-template\s*}>)/',
+            '(?:<{\s*\/link-template\s*}>)/s',
             $main_content, $matches);
 
 
